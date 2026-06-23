@@ -6,412 +6,21 @@
     <title>Digital Money Launchpad</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root {
-            --bg-color: #f4f6f9;
-            --card-bg: #ffffff;
-            --primary: #1e3a8a;
-            --accent: #f97316;
-            --accent-hover: #ea580c;
-            --text: #1f2937;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
-            --success: #10b981;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text);
-            padding: 2rem 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
-
-        /* Auth Screen Styling */
-        .auth-container {
-            width: 100%;
-            max-width: 400px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            padding: 2.5rem;
-            margin-top: 4rem;
-            display: block;
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .auth-header h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .form-group input {
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: border 0.2s;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-        }
-
-        .auth-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.85rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .auth-btn:hover {
-            background: #111827;
-        }
-
-        .auth-toggle {
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-top: 1rem;
-        }
-
-        .auth-toggle span {
-            color: var(--accent);
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Main App Container Layout */
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            padding: 2rem;
-            display: none;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 1.5rem;
-        }
-
-        .header-main h1 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            font-weight: 800;
-        }
-
-        .header-main h1 span {
-            color: var(--accent);
-        }
-
-        .header-main p {
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .logout-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .logout-btn:hover {
-            background: #fee2e2;
-            color: #ef4444;
-            border-color: #fca5a5;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        /* Path Selection Grid */
-        .path-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .path-card {
-            background: var(--card-bg);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .path-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--primary);
-        }
-
-        .path-card.active {
-            border-color: var(--primary);
-            background-color: #f0fdf4;
-            box-shadow: 0 0 12px rgba(30, 58, 138, 0.1);
-        }
-
-        .path-card .icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .path-card h3 {
-            font-size: 1.1rem;
-            color: var(--text);
-            margin-bottom: 0.25rem;
-        }
-
-        .path-card p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* Dashboard Layout */
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (min-width: 768px) {
-            .dashboard {
-                grid-template-columns: 3fr 2fr;
-            }
-        }
-
-        .card {
-            background: #fafafa;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            margin-bottom: 1rem;
-        }
-        .progress-text {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        .progress-bar-bg {
-            background: var(--border);
-            border-radius: 8px;
-            height: 12px;
-            width: 100%;
-            overflow: hidden;
-        }
-        .progress-bar-fill {
-            background: var(--success);
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        /* Checkbox list */
-        .checklist {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .check-item {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            display: flex;
-            gap: 0.75rem;
-            align-items: flex-start;
-        }
-        .check-item input[type="checkbox"] {
-            margin-top: 0.25rem;
-            transform: scale(1.2);
-            cursor: pointer;
-        }
-
-        .success-banner {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            display: none;
-        }
-
-        /* Resource Grid */
-        .resource-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .resource-item {
-            background: var(--card-bg);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .resource-item a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        .resource-tag {
-            font-size: 0.75rem;
-            background: #eff6ff;
-            color: var(--primary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        /* Calculator controls */
-        .calc-group {
-            margin-top: 1rem;
-        }
-        .calc-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        .calc-group input[type="range"] {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-        .stat-display {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--accent);
-            margin-top: 0.5rem;
-        }
-
-        .action-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Modal Overlay Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-            padding: 1rem;
-        }
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal {
-            background: var(--card-bg);
-            border-radius: 12px;
-            max-width: 600px;
-            width: 100%;
-            padding: 1.5rem;
-        }
-        .pitch-box {
-            width: 100%; height: 200px;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: #f9fafb;
-            font-family: monospace;
-            font-size: 0.9rem;
-            resize: none;
-            margin-bottom: 1rem;
-        }
-        .modal-footer {
-            display: flex; gap: 0.5rem; justify-content: flex-end;
-        }
-        .modal-btn {
-            padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: #fff;
-        }
-        .modal-btn.primary { background: var(--primary); color: white; border: none; }
+        :root { --bg: #f4f6f9; --card: #fff; --primary: #1e3a8a; --accent: #f97316; --text: #1f2937; --muted: #6b7280; --border: #e5e7eb; --success: #10b981; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 2rem 1rem; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .auth-container { width: 100%; max-width: 400px; background: var(--card); border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 2.5rem; }
+        .auth-header { text-align: center; margin-bottom: 2rem; }
+        .auth-header h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group label { font-size: 0.9rem; font-weight: 600; }
+        .form-group input { padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; }
+        .auth-btn { background: var(--primary); color: white; border: none; padding: 0.85rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+        .auth-toggle { text-align: center; font-size: 0.9rem; color: var(--muted); margin-top: 1rem; }
+        .auth-toggle span { color: var(--accent); cursor: pointer; font-weight: 600; }
+        .container { display: none; max-width: 600px; background: var(--card); padding: 2rem; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .logout-btn { background: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 1.5rem; }
     </style>
 </head>
 <body>
@@ -419,15 +28,15 @@
 <div class="auth-container" id="authScreen">
     <div class="auth-header">
         <h2 id="authTitle">Sign In</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Access your Digital Income Roadmap</p>
+        <p style="color: var(--muted); font-size: 0.9rem;">Access your Digital Income Roadmap</p>
     </div>
     <form class="auth-form" id="authForm" onsubmit="handleAuth(event)">
         <div class="form-group">
-            <label for="authEmail">Email Address</label>
+            <label>Email Address</label>
             <input type="email" id="authEmail" required placeholder="you@example.com">
         </div>
         <div class="form-group">
-            <label for="authPassword">Password</label>
+            <label>Password</label>
             <input type="password" id="authPassword" required placeholder="••••••••" minlength="6">
         </div>
         <button type="submit" class="auth-btn" id="authSubmitBtn">Login</button>
@@ -438,171 +47,28 @@
 </div>
 
 <div class="container" id="appDashboard">
-    <header>
-        <div class="header-main">
-            <h1>Digital Money <span>LaunchPad</span></h1>
-            <p>Your Digital Income Roadmap</p>
-        </div>
-        <button class="logout-btn" onclick="handleLogout()">Log Out</button>
-    </header>
-
-    <div class="path-grid">
-        <div class="path-card active" onclick="selectPath('writer')" id="path-writer">
-            <div class="icon">✍️</div>
-            <h3>The Writer</h3>
-            <p>Copy, Captions, Blogs</p>
-        </div>
-        <div class="path-card" onclick="selectPath('creative')" id="path-creative">
-            <div class="icon">🎨</div>
-            <h3>The Creative</h3>
-            <p>Video, Thumbnails, Canva</p>
-        </div>
-        <div class="path-card" onclick="selectPath('tech')" id="path-tech">
-            <div class="icon">🛠️</div>
-            <h3>The Tech-Curious</h3>
-            <p>No-Code, Chatbots, Data</p>
-        </div>
-        <div class="path-card" onclick="selectPath('organizer')" id="path-organizer">
-            <div class="icon">🤝</div>
-            <h3>The Organizer</h3>
-            <p>VA, Community Mgmt</p>
-        </div>
-    </div>
-
-    <div class="dashboard">
-        <div class="card">
-            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
-            <div id="successBanner" class="success-banner">
-                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
-            </div>
-            <div class="progress-container">
-                <div class="progress-text">
-                    <span id="progressCount">0 of 3 Projects Done</span>
-                    <span id="progressPercent">0%</span>
-                </div>
-                <div class="progress-bar-bg"><div id="progressBar" class="progress-bar-fill"></div></div>
-            </div>
-            <div class="checklist" id="projectChecklist"></div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-            <div class="card">
-                <h2 class="section-title">🎓 Free Learning Vault</h2>
-                <div class="resource-list" id="resourceVault"></div>
-            </div>
-            <div class="card">
-                <h2 class="section-title">⏳ Time-to-Value Estimator</h2>
-                <div class="calc-group">
-                    <label for="hoursSlider">Daily Dedication: <span id="hoursVal">4</span> hours</label>
-                    <input type="range" id="hoursSlider" min="1" max="8" value="4" oninput="calculateTimeline()">
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">Realistically launch your track in:</p>
-                    <div class="stat-display" id="timelineDisplay">~4 weeks</div>
-                </div>
-            </div>
-            <button class="action-btn" onclick="openPitchModal()">💬 Generate Custom Pitch Template</button>
-        </div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="pitchModal">
-    <div class="modal">
-        <div style="display:flex; justify-content:space-between; margin-bottom:1rem; border-bottom:1px solid var(--border); padding-bottom:0.5rem;">
-            <h3 id="modalTitle">Custom Pitch Template</h3>
-            <button style="background:none; border:none; font-size:1.5rem; cursor:pointer;" onclick="closePitchModal()">&times;</button>
-        </div>
-        <textarea class="pitch-box" id="pitchTextarea" readonly></textarea>
-        <div class="modal-footer">
-            <button class="modal-btn" onclick="closePitchModal()">Close</button>
-            <button class="modal-btn primary" onclick="copyPitchText()">Copy Template</button>
-        </div>
-    </div>
+    <h1 style="color: var(--primary);">🚀 Welcome to Launchpad!</h1>
+    <p style="margin-top: 1rem; color: var(--muted);">Your backend connection is officially working.</p>
+    <button class="logout-btn" onclick="handleLogout()">Log Out</button>
 </div>
 
 <script>
-    // Initialize Supabase Connection Client Ecosystem
     const SUPABASE_URL = "https://pdjvbteibzlwpxiknciub.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkanZidGliemx3cHhpa25jaXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNDgwMTYsImV4cCI6MjA5NzgyNDAxNn0.2B1GEkU2ijyCOgbkrDdvO8f9XYOzqyLUmCizy_ltBtU";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let authMode = "login"; // Options: 'login' or 'signup'
+    let currentMode = "login";
 
-    const appData = {
-        writer: {
-            title: "The Writer",
-            projects: [
-                { title: "Project 1: Social Media Kit", desc: "Write 5 high-engagement Instagram captions for a local fitness business blueprint." },
-                { title: "Project 2: SEO Blog Post", desc: "Draft a clean, structured 1000-word educational article focused on remote work productivity tools." },
-                { title: "Project 3: Brand Email Sequence", desc: "Write a high-converting 3-part cold/welcome autoresponder flow for a mockup skincare line." }
-            ],
-            resources: [
-                { name: "HubSpot Content Marketing", type: "Free Course", url: "https://academy.hubspot.com/" },
-                { name: "Alex Cattoni Copywriting", type: "YouTube Channel", url: "https://www.youtube.com/@AlexCattoni" },
-                { name: "Jon Morrow Blog Blueprint", type: "Guides", url: "https://smartblogger.com/" }
-            ],
-            pitch: "Subject: Quick idea for [Client Name]'s social media content\n\nHi [Client Name],\n\nI love your recent content on [Their Specific Social Profile], especially your angle regarding industry trends. I noticed an open opportunity to step up the formatting structure of your written captions to boost user save rates.\n\nI actually drafted up a mock 5-post caption strategy kit specifically optimized for your target audience profile. You can check it out completely free here: [Link to Your Practice Kit]\n\nIf you find value in this roadmap design, I'd love to chat for 10 minutes next week to see how we could scale your asset production workflow.\n\nBest regards,\n[Your Name]"
-        },
-        creative: {
-            title: "The Creative",
-            projects: [
-                { title: "Project 1: YouTube Thumbnails", desc: "Design 3 high-CTR custom thumbnail variants for a tech reviewer persona using Canva grids." },
-                { title: "Project 2: Educational Carousel", desc: "Create a conversion-focused 5-slide visual slide pack for an executive coach ecosystem." },
-                { title: "Project 3: Micro-Video Content", desc: "Edit a raw 1-minute video file into an optimized TikTok/Reel layout with manual captions." }
-            ],
-            resources: [
-                { name: "Canva Design School", type: "Free Course", url: "https://designschool.canva.com/" },
-                { name: "Envato Tuts+", type: "YouTube Channel", url: "https://www.youtube.com/@envatotuts" },
-                { name: "Gareth David Studio", type: "YouTube Channel", url: "https://www.youtube.com/@GarethDavidStudio" }
-            ],
-            pitch: "Subject: Short-form video edit idea for [Client Name]\n\nHi [Client Name],\n\nI caught your latest video file on [Their Specific Social Profile] and loved the core insight. To see how it would translate into a high-retention vertical format, I took a 45-second snippet and edited it into a structured video outline with native dynamic text hooks.\n\nYou can view the processed test run sample directly here: [Link to Your Practice Video Edit]\n\nI help brands clean up their micro-video pipelines to capture visual traffic. Let me know if you like the visual design style, and we can discuss scheduling a brief sync session!\n\nBest,\n[Your Name]"
-        },
-        tech: {
-            title: "The Tech-Curious",
-            projects: [
-                { title: "Project 1: Merchant Landing Page", desc: "Build a single-page localized commercial shop page layout using modern Carrd/Notion systems." },
-                { title: "Project 2: Webhooks Connection", desc: "Configure an operational automation linking a Google Form submission directly to custom email engines via Make/Zapier." },
-                { title: "Project 3: Interactive Dashboard", desc: "Design a clean database reporting sheet template to clean up small business pipeline visibility." }
-            ],
-            resources: [
-                { name: "Grow with Google Track", type: "Free Cert", url: "https://grow.google/" },
-                { name: "freeCodeCamp Systems", type: "Interactive", url: "https://www.freecodecamp.org/" },
-                { name: "Doc Williams No-Code", type: "YouTube Channel", url: "https://www.youtube.com/@DocWilliams" }
-            ],
-            pitch: "Subject: Enhancing your business automation workflow / [Client Name]\n\nHi [Client Name],\n\nI was looking through your modern product landing page flows and noticed a small automated step that could be optimized to systematically nurture leads without manual tracking overhead.\n\nI created a quick functional system architecture map detailing how a simple web handler can directly manage validation confirmations instantly. You can view the layout here: [Link to Your Practice Web Interface/Sheet]\n\nI focus on deploying technical optimizations for scaling brands. If you are open to making your operations a bit more lightweight this month, let's connect for 10 minutes.\n\nCheers,\n[Your Name]"
-        },
-        organizer: {
-            title: "The Organizer",
-            projects: [
-                { title: "Project 1: Inbox Architecture", desc: "Map a multi-tier client labeling, archiving, and prioritizing filter model for a high-volume executive." },
-                { title: "Project 2: Master Business Itinerary", desc: "Draft a comprehensive 5-day multi-tier trip logistics spreadsheet map including confirmation points." },
-                { title: "Project 3: System Calendar Audit", desc: "Build a structural weekly schedule block asset optimizing external scheduling pipelines." }
-            ],
-            resources: [
-                { name: "Google Workspace Learning Center", type: "Free Training", url: "https://support.google.com/a/users/answer/9283050" },
-                { name: "Erin Booth VA Mastery", type: "YouTube Channel", url: "https://www.youtube.com/@ErinBooth" },
-                { name: "Asana Academy Core", type: "Free Cert", url: "https://academy.asana.com/" }
-            ],
-            pitch: "Subject: Operations / Scheduling optimization project review for [Client Name]\n\nHi [Client Name],\n\nAs an executive navigating a growing calendar footprint, administrative friction can quickly impact core delivery blocks. I put together an optimized weekly calendar audit model demonstrating how automated workflow funnels can protect focus time.\n\nI built a framework mapping this layout out which you can check over here: [Link to Your System Strategy Blueprint]\n\nI specialize in helping founders streamline operational overhead. Let me know if you would like to test this layout architecture in your setup!\n\nBest regards,\n[Your Name]"
-        }
-    };
-
-    let currentPath = 'writer';
-
-    // Verification Router Engine
     window.onload = async function() {
-        const { data: { session } } = await supabase.auth.getSession();
-        handleSessionRoute(session);
-
-        supabase.auth.onAuthStateChange((_event, session) => {
-            handleSessionRoute(session);
-        });
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        routeUser(session);
+        supabaseClient.auth.onAuthStateChange((_event, session) => { routeUser(session); });
     };
 
-    function handleSessionRoute(session) {
+    function routeUser(session) {
         if (session) {
             document.getElementById('authScreen').style.display = 'none';
             document.getElementById('appDashboard').style.display = 'block';
-            selectPath('writer');
-            calculateTimeline();
         } else {
             document.getElementById('authScreen').style.display = 'block';
             document.getElementById('appDashboard').style.display = 'none';
@@ -610,10 +76,10 @@
     }
 
     function toggleAuthMode() {
-        authMode = authMode === 'login' ? 'signup' : 'login';
-        document.getElementById('authTitle').innerText = authMode === 'login' ? 'Sign In' : 'Create Account';
-        document.getElementById('authSubmitBtn').innerText = authMode === 'login' ? 'Login' : 'Register';
-        document.getElementById('authToggleText').innerHTML = authMode === 'login' 
+        currentMode = currentMode === 'login' ? 'signup' : 'login';
+        document.getElementById('authTitle').innerText = currentMode === 'login' ? 'Sign In' : 'Create Account';
+        document.getElementById('authSubmitBtn').innerText = currentMode === 'login' ? 'Login' : 'Register';
+        document.getElementById('authToggleText').innerHTML = currentMode === 'login' 
             ? `Don't have an account? <span onclick="toggleAuthMode()">Sign Up</span>`
             : `Already have an account? <span onclick="toggleAuthMode()">Sign In</span>`;
     }
@@ -623,89 +89,18 @@
         const email = document.getElementById('authEmail').value;
         const password = document.getElementById('authPassword').value;
 
-        if (authMode === 'login') {
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (currentMode === 'login') {
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
             if (error) alert(error.message);
         } else {
-            const { error } = await supabase.auth.signUp({ email, password });
+            const { error } = await supabaseClient.auth.signUp({ email, password });
             if (error) alert(error.message);
             else alert("Registration successful! Please check your email inbox to confirm your account before logging in.");
         }
     }
 
     async function handleLogout() {
-        await supabase.auth.signOut();
-    }
-
-    function selectPath(pathKey) {
-        currentPath = pathKey;
-        document.querySelectorAll('.path-card').forEach(card => card.classList.remove('active'));
-        document.getElementById(`path-${pathKey}`).classList.add('active');
-        renderChecklist(appData[pathKey].projects);
-        renderResources(appData[pathKey].resources);
-        updateProgressBar();
-    }
-
-    function renderChecklist(projects) {
-        const listContainer = document.getElementById('projectChecklist');
-        listContainer.innerHTML = '';
-        projects.forEach((proj, idx) => {
-            listContainer.innerHTML += `
-                <div class="check-item">
-                    <input type="checkbox" id="proj-${idx}" onchange="updateProgressBar()">
-                    <div class="check-item-text">
-                        <h4>${proj.title}</h4>
-                        <p>${proj.desc}</p>
-                    </div>
-                </div>`;
-        });
-    }
-
-    function renderResources(resources) {
-        const vaultContainer = document.getElementById('resourceVault');
-        vaultContainer.innerHTML = '';
-        resources.forEach(res => {
-            vaultContainer.innerHTML += `
-                <div class="resource-item">
-                    <a href="${res.url}" target="_blank">${res.name} &nearr;</a>
-                    <span class="resource-tag">${res.type}</span>
-                </div>`;
-        });
-    }
-
-    function updateProgressBar() {
-        const checkboxes = document.querySelectorAll('#projectChecklist input[type="checkbox"]');
-        let checkedCount = 0;
-        checkboxes.forEach(cb => { if(cb.checked) checkedCount++; });
-        const pct = Math.round((checkedCount / 3) * 100);
-        document.getElementById('progressBar').style.width = `${pct}%`;
-        document.getElementById('progressPercent').innerText = `${pct}%`;
-        document.getElementById('progressCount').innerText = `${checkedCount} of 3 Projects Done`;
-        document.getElementById('successBanner').style.display = checkedCount === 3 ? 'block' : 'none';
-    }
-
-    function calculateTimeline() {
-        const hours = document.getElementById('hoursSlider').value;
-        document.getElementById('hoursVal').innerText = hours;
-        let dynamicTimeline = "~8 weeks";
-        if (hours >= 3 && hours <= 4) dynamicTimeline = "~4 weeks";
-        else if (hours >= 5 && hours <= 6) dynamicTimeline = "~3 weeks";
-        else if (hours > 6) dynamicTimeline = "~2 weeks!";
-        document.getElementById('timelineDisplay').innerText = dynamicTimeline;
-    }
-
-    function openPitchModal() {
-        const modal = document.getElementById('pitchModal');
-        document.getElementById('modalTitle').innerText = `${appData[currentPath].title} Pitch Script Template`;
-        document.getElementById('pitchTextarea').value = appData[currentPath].pitch;
-        modal.classList.add('open');
-    }
-    function closePitchModal() { document.getElementById('pitchModal').classList.remove('open'); }
-    function copyPitchText() {
-        const txtArea = document.getElementById('pitchTextarea');
-        txtArea.select();
-        navigator.clipboard.writeText(txtArea.value);
-        alert('Template script copied straight to clipboard!');
+        await supabaseClient.auth.signOut();
     }
 </script>
 </body>
