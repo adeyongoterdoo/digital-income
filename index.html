@@ -203,7 +203,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Double Column Dashboard Grid - Swap columns contextually */
+        /* Double Column Dashboard Grid */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -212,7 +212,7 @@
 
         @media (min-width: 768px) {
             .dashboard-grid {
-                grid-template-columns: 1.2fr 1fr; /* Checklist Left, Resources/Tools Right */
+                grid-template-columns: 1fr 1.2fr; /* Swapped: Left side smaller for Vault, Right side larger for Checklist */
             }
         }
 
@@ -522,47 +522,7 @@
                 <div class="track-content" id="content-writer">
                     <div class="dashboard-grid">
                         
-                        <!-- Left Side: Custom Checklist with Leather Bag Emoji -->
-                        <div class="card">
-                            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
-                            <div id="successBanner-writer" class="success-banner">
-                                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-text">
-                                    <span id="progressCount-writer">0 of 3 Projects Done</span>
-                                    <span id="progressPercent-writer">0%</span>
-                                </div>
-                                <div class="progress-bar-bg">
-                                    <div id="progressBar-writer" class="progress-bar-fill"></div>
-                                </div>
-                            </div>
-                            <div class="checklist">
-                                <div class="check-item">
-                                    <input type="checkbox" id="writer-proj-0" onchange="updateTrackProgress('writer')">
-                                    <div class="check-item-text">
-                                        <h4>Project 1: Social Media Kit</h4>
-                                        <p>Write 5 high-engagement Instagram captions for a local fitness business blueprint.</p>
-                                    </div>
-                                </div>
-                                <div class="check-item">
-                                    <input type="checkbox" id="writer-proj-1" onchange="updateTrackProgress('writer')">
-                                    <div class="check-item-text">
-                                        <h4>Project 2: SEO Blog Post</h4>
-                                        <p>Draft a clean, structured 1000-word educational article focused on remote work productivity tools.</p>
-                                    </div>
-                                </div>
-                                <div class="check-item">
-                                    <input type="checkbox" id="writer-proj-2" onchange="updateTrackProgress('writer')">
-                                    <div class="check-item-text">
-                                        <h4>Project 3: Brand Email Sequence</h4>
-                                        <p>Write a high-converting 3-part cold/welcome autoresponder flow for a mockup skincare line.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Side: Vault & Estimator -->
+                        <!-- Left Side: Vault & Estimator -->
                         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                             <div class="card">
                                 <h2 class="section-title">🎓 Free Learning Vault</h2>
@@ -591,6 +551,48 @@
                                     <div class="stat-display" id="display-writer">~4 weeks</div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Right Side: Custom Checklist with Leather Bag Emoji & Pitch Generator -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="card">
+                                <h2 class="section-title">💼 Portfolio Project Checklist</h2>
+                                <div id="successBanner-writer" class="success-banner">
+                                    🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-text">
+                                        <span id="progressCount-writer">0 of 3 Projects Done</span>
+                                        <span id="progressPercent-writer">0%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div id="progressBar-writer" class="progress-bar-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="checklist">
+                                    <div class="check-item">
+                                        <input type="checkbox" id="writer-proj-0" onchange="updateTrackProgress('writer')">
+                                        <div class="check-item-text">
+                                            <h4>Project 1: Social Media Kit</h4>
+                                            <p>Write 5 high-engagement Instagram captions for a local fitness business blueprint.</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-item">
+                                        <input type="checkbox" id="writer-proj-1" onchange="updateTrackProgress('writer')">
+                                        <div class="check-item-text">
+                                            <h4>Project 2: SEO Blog Post</h4>
+                                            <p>Draft a clean, structured 1000-word educational article focused on remote work productivity tools.</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-item">
+                                        <input type="checkbox" id="writer-proj-2" onchange="updateTrackProgress('writer')">
+                                        <div class="check-item-text">
+                                            <h4>Project 3: Brand Email Sequence</h4>
+                                            <p>Write a high-converting 3-part cold/welcome autoresponder flow for a mockup skincare line.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <button class="action-btn" onclick="openPitchModal('writer')">
                                 💬 Generate Custom Pitch Template
@@ -613,47 +615,7 @@
                 <div class="track-content" id="content-creative" style="display: block;">
                     <div class="dashboard-grid">
                         
-                        <!-- Left Side: Checklist -->
-                        <div class="card">
-                            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
-                            <div id="successBanner-creative" class="success-banner">
-                                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-text">
-                                    <span id="progressCount-creative">0 of 3 Projects Done</span>
-                                    <span id="progressPercent-creative">0%</span>
-                                </div>
-                                <div class="progress-bar-bg">
-                                    <div id="progressBar-creative" class="progress-bar-fill"></div>
-                                </div>
-                            </div>
-                            <div class="checklist">
-                                <div class="check-item">
-                                    <input type="checkbox" id="creative-proj-0" onchange="updateTrackProgress('creative')">
-                                    <div class="check-item-text">
-                                        <h4>Project 1: YouTube Thumbnails</h4>
-                                        <p>Design 3 high-CTR custom thumbnail variants for a tech reviewer persona using Canva grids.</p>
-                                    </div>
-                                </div>
-                                <div class="check-item">
-                                    <input type="checkbox" id="creative-proj-1" onchange="updateTrackProgress('creative')">
-                                    <div class="check-item-text">
-                                        <h4>Project 2: Educational Carousel</h4>
-                                        <p>Create a conversion-focused 5-slide visual slide pack for an executive coach ecosystem.</p>
-                                    </div>
-                                </div>
-                                <div class="check-item">
-                                    <input type="checkbox" id="creative-proj-2" onchange="updateTrackProgress('creative')">
-                                    <div class="check-item-text">
-                                        <h4>Project 3: Micro-Video Content</h4>
-                                        <p>Edit a raw 1-minute video file into an optimized TikTok/Reel layout with manual captions.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Side: Vault & Estimator -->
+                        <!-- Left Side: Vault & Estimator -->
                         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                             <div class="card">
                                 <h2 class="section-title">🎓 Free Learning Vault</h2>
@@ -682,6 +644,48 @@
                                     <div class="stat-display" id="display-creative">~4 weeks</div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Right Side: Checklist & Pitch Generator -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="card">
+                                <h2 class="section-title">💼 Portfolio Project Checklist</h2>
+                                <div id="successBanner-creative" class="success-banner">
+                                    🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-text">
+                                        <span id="progressCount-creative">0 of 3 Projects Done</span>
+                                        <span id="progressPercent-creative">0%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div id="progressBar-creative" class="progress-bar-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="checklist">
+                                    <div class="check-item">
+                                        <input type="checkbox" id="creative-proj-0" onchange="updateTrackProgress('creative')">
+                                        <div class="check-item-text">
+                                            <h4>Project 1: YouTube Thumbnails</h4>
+                                            <p>Design 3 high-CTR custom thumbnail variants for a tech reviewer persona using Canva grids.</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-item">
+                                        <input type="checkbox" id="creative-proj-1" onchange="updateTrackProgress('creative')">
+                                        <div class="check-item-text">
+                                            <h4>Project 2: Educational Carousel</h4>
+                                            <p>Create a conversion-focused 5-slide visual slide pack for an executive coach ecosystem.</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-item">
+                                        <input type="checkbox" id="creative-proj-2" onchange="updateTrackProgress('creative')">
+                                        <div class="check-item-text">
+                                            <h4>Project 3: Micro-Video Content</h4>
+                                            <p>Edit a raw 1-minute video file into an optimized TikTok/Reel layout with manual captions.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <button class="action-btn" onclick="openPitchModal('creative')">
                                 💬 Generate Custom Pitch Template
@@ -704,47 +708,7 @@
                 <div class="track-content" id="content-tech">
                     <div class="dashboard-grid">
                         
-                        <!-- Left Side: Checklist -->
-                        <div class="card">
-                            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
-                            <div id="successBanner-tech" class="success-banner">
-                                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-text">
-                                    <span id="progressCount-tech">0 of 3 Projects Done</span>
-                                    <span id="progressPercent-tech">0%</span>
-                                </div>
-                                <div class="progress-bar-bg">
-                                    <div id="progressBar-tech" class="progress-bar-fill"></div>
-                                </div>
-                            </div>
-                            <div class="checklist">
-                                <div class="check-item">
-                                    <input type="checkbox" id="tech-proj-0" onchange="updateTrackProgress('tech')">
-                                    <div class="check-item-text">
-                                        <h4>Project 1: Merchant Landing Page</h4>
-                                        <p>Build a single-page localized commercial shop page layout using modern Carrd/Notion systems.</p>
-                                    </div>
-                                </div>
-                                <div class="check-item">
-                                    <input type="checkbox" id="tech-proj-1" onchange="updateTrackProgress('tech')">
-                                    <div class="check-item-text">
-                                        <h4>Project 2: Webhooks Connection</h4>
-                                        <p>Configure an operational automation linking a Google Form submission directly to custom email engines via Make/Zapier.</p>
-                                    </div>
-                                </div>
-                                <div class="check-item">
-                                    <input type="checkbox" id="tech-proj-2" onchange="updateTrackProgress('tech')">
-                                    <div class="check-item-text">
-                                        <h4>Project 3: Interactive Dashboard</h4>
-                                        <p>Design a clean database reporting sheet template to clean up small business pipeline visibility.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Side: Vault & Estimator -->
+                        <!-- Left Side: Vault & Estimator -->
                         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                             <div class="card">
                                 <h2 class="section-title">🎓 Free Learning Vault</h2>
@@ -773,6 +737,48 @@
                                     <div class="stat-display" id="display-tech">~4 weeks</div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Right Side: Checklist & Pitch Generator -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="card">
+                                <h2 class="section-title">💼 Portfolio Project Checklist</h2>
+                                <div id="successBanner-tech" class="success-banner">
+                                    🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-text">
+                                        <span id="progressCount-tech">0 of 3 Projects Done</span>
+                                        <span id="progressPercent-tech">0%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div id="progressBar-tech" class="progress-bar-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="checklist">
+                                    <div class="check-item">
+                                        <input type="checkbox" id="tech-proj-0" onchange="updateTrackProgress('tech')">
+                                        <div class="check-item-text">
+                                            <h4>Project 1: Merchant Landing Page</h4>
+                                            <p>Build a single-page localized commercial shop page layout using modern Carrd/Notion systems.</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-item">
+                                        <input type="checkbox" id="tech-proj-1" onchange="updateTrackProgress('tech')">
+                                        <div class="check-item-text">
+                                            <h4>Project 2: Webhooks Connection</h4>
+                                            <p>Configure an operational automation linking a Google Form submission directly to custom email engines via Make/Zapier.</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-item">
+                                        <input type="checkbox" id="tech-proj-2" onchange="updateTrackProgress('tech')">
+                                        <div class="check-item-text">
+                                            <h4>Project 3: Interactive Dashboard</h4>
+                                            <p>Design a clean database reporting sheet template to clean up small business pipeline visibility.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <button class="action-btn" onclick="openPitchModal('tech')">
                                 💬 Generate Custom Pitch Template
@@ -795,47 +801,7 @@
                 <div class="track-content" id="content-organizer">
                     <div class="dashboard-grid">
                         
-                        <!-- Left Side: Checklist -->
-                        <div class="card">
-                            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
-                            <div id="successBanner-organizer" class="success-banner">
-                                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-text">
-                                    <span id="progressCount-organizer">0 of 3 Projects Done</span>
-                                    <span id="progressPercent-organizer">0%</span>
-                                </div>
-                                <div class="progress-bar-bg">
-                                    <div id="progressBar-organizer" class="progress-bar-fill"></div>
-                                </div>
-                            </div>
-                            <div class="checklist">
-                                <div class="check-item">
-                                    <input type="checkbox" id="organizer-proj-0" onchange="updateTrackProgress('organizer')">
-                                    <div class="check-item-text">
-                                        <h4>Project 1: Inbox Architecture</h4>
-                                        <p>Map a multi-tier client labeling, archiving, and prioritizing filter model for a high-volume executive.</p>
-                                    </div>
-                                </div>
-                                <div class="check-item">
-                                    <input type="checkbox" id="organizer-proj-1" onchange="updateTrackProgress('organizer')">
-                                    <div class="check-item-text">
-                                        <h4>Project 2: Master Business Itinerary</h4>
-                                        <p>Draft a comprehensive 5-day multi-tier trip logistics spreadsheet map including confirmation points.</p>
-                                    </div>
-                                </div>
-                                <div class="check-item">
-                                    <input type="checkbox" id="organizer-proj-2" onchange="updateTrackProgress('organizer')">
-                                    <div class="check-item-text">
-                                        <h4>Project 3: System Calendar Audit</h4>
-                                        <p>Build a structural weekly schedule block asset optimizing external scheduling pipelines.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Side: Vault & Estimator -->
+                        <!-- Left Side: Vault & Estimator -->
                         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                             <div class="card">
                                 <h2 class="section-title">🎓 Free Learning Vault</h2>
@@ -862,6 +828,48 @@
                                     <input type="range" id="slider-organizer" min="1" max="8" value="4" oninput="calculateTrackTimeline('organizer')">
                                     <p style="font-size: 0.85rem; color: var(--text-muted);">Realistically launch your track in:</p>
                                     <div class="stat-display" id="display-organizer">~4 weeks</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Checklist & Pitch Generator -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="card">
+                                <h2 class="section-title">💼 Portfolio Project Checklist</h2>
+                                <div id="successBanner-organizer" class="success-banner">
+                                    🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-text">
+                                        <span id="progressCount-organizer">0 of 3 Projects Done</span>
+                                        <span id="progressPercent-organizer">0%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div id="progressBar-organizer" class="progress-bar-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="checklist">
+                                    <div class="check-item">
+                                        <input type="checkbox" id="organizer-proj-0" onchange="updateTrackProgress('organizer')">
+                                        <div class="check-item-text">
+                                            <h4>Project 1: Inbox Architecture</h4>
+                                            <p>Map a multi-tier client labeling, archiving, and prioritizing filter model for a high-volume executive.</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-item">
+                                        <input type="checkbox" id="organizer-proj-1" onchange="updateTrackProgress('organizer')">
+                                        <div class="check-item-text">
+                                            <h4>Project 2: Master Business Itinerary</h4>
+                                            <p>Draft a comprehensive 5-day multi-tier trip logistics spreadsheet map including confirmation points.</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-item">
+                                        <input type="checkbox" id="organizer-proj-2" onchange="updateTrackProgress('organizer')">
+                                        <div class="check-item-text">
+                                            <h4>Project 3: System Calendar Audit</h4>
+                                            <p>Build a structural weekly schedule block asset optimizing external scheduling pipelines.</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -920,7 +928,7 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let isSignUpMode = true;
 
-        // Modern Notification Overlay functions
+        // Modern Built-In Notification Banner Setup (No Native alert/confirm blocks)
         function showNotification(msg, type = 'error') {
             const notif = document.getElementById('customNotification');
             const text = document.getElementById('notificationText');
@@ -949,7 +957,7 @@
                     if (error) { 
                         showNotification("Error: " + error.message, 'error'); 
                     } else { 
-                        showNotification("Registration successful!", 'success'); 
+                        showNotification("Registration successful! Welcome to the Launchpad.", 'success'); 
                         showDashboard(); 
                     }
                 } else {
@@ -957,6 +965,7 @@
                     if (error) { 
                         showNotification("Error: " + error.message, 'error'); 
                     } else { 
+                        showNotification("Log in successful!", 'success');
                         showDashboard(); 
                     }
                 }
@@ -984,6 +993,7 @@
             await supabaseClient.auth.signOut();
             document.getElementById('authSection').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
+            showNotification('Successfully logged out.', 'success');
         }
 
         // --- INTERACTIVE TIMELINE ACCORDION ACCELERATOR ---
