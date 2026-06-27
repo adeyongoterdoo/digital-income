@@ -10,14 +10,14 @@
     
     <style>
         :root {
-            --bg-color: #f4f6f9;
+            --bg-color: #f8fafc; /* Sleek modern off-white/slate background */
             --card-bg: #ffffff;
             --primary: #1e3a8a; /* Original Blue */
             --accent: #f97316;  /* Original Orange */
             --accent-hover: #ea580c;
-            --text: #1f2937;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
+            --text: #0f172a;    /* Dark slate text */
+            --text-muted: #475569;
+            --border: #e2e8f0;  /* Subtle divider color */
             --success: #10b981;
         }
 
@@ -31,7 +31,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text);
-            padding: 2rem 1rem;
+            padding: 3rem 1.5rem;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -41,18 +41,18 @@
         .container {
             width: 100%;
             max-width: 1000px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            padding: 2rem;
+            background: transparent; /* Removed the "sheet" container color */
+            border-radius: 0;
+            box-shadow: none;        /* Removed the container drop-shadow */
+            padding: 0;              /* Content flows beautifully to edges */
             position: relative;
         }
 
         header {
             text-align: center;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 1.5rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2rem;
             position: relative;
         }
 
