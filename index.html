@@ -5,31 +5,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Money Launchpad</title>
     
+    <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
-            --primary-bg: #f4f6f9;
+            --bg-color: #f4f6f9;
             --card-bg: #ffffff;
-            --accent-orange: #ff5722;
-            --accent-teal: #0d5c63;
-            --text-dark: #2c3e50;
-            --border-color: #e2e8f0;
+            --primary: #1e3a8a; /* Original Blue */
+            --accent: #f97316;  /* Original Orange */
+            --accent-hover: #ea580c;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --success: #10b981;
         }
 
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
-            background-color: var(--primary-bg); 
-            color: var(--text-dark);
-            margin: 0; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            padding: 2rem 1rem;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
         }
 
-        /* Auth Container Styling */
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 2rem;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1.5rem;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        header h1 span {
+            color: var(--accent);
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: none;
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+        .logout-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Auth Screen Container */
         .auth-container { 
             background: var(--card-bg); 
             padding: 2.5rem; 
@@ -38,12 +99,18 @@
             width: 100%; 
             max-width: 400px; 
             text-align: center; 
+            margin-top: 10vh;
+        }
+        .auth-container h2 {
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
         }
         .auth-container input { 
             width: 100%; 
             padding: 12px; 
             margin: 10px 0; 
-            border: 1px solid var(--border-color); 
+            border: 1px solid var(--border); 
             border-radius: 8px; 
             box-sizing: border-box; 
             font-size: 15px;
@@ -51,7 +118,7 @@
         .auth-container button { 
             width: 100%; 
             padding: 12px; 
-            background-color: var(--accent-orange); 
+            background-color: var(--accent); 
             color: white; 
             border: none; 
             border-radius: 8px; 
@@ -59,48 +126,13 @@
             font-size: 16px; 
             font-weight: bold;
             margin-top: 10px; 
+            transition: background 0.2s ease;
+        }
+        .auth-container button:hover {
+            background-color: var(--accent-hover);
         }
 
-        /* --- VERTICAL DASHBOARD INTERFACE --- */
-        #dashboard { 
-            display: none; 
-            width: 95%; 
-            max-width: 850px; 
-            margin: 30px auto;
-            box-sizing: border-box;
-        }
-
-        .header-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-            position: relative;
-        }
-        .header-section h1 {
-            font-size: 2.3rem;
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: -1px;
-        }
-        .header-section h1 span { color: var(--accent-orange); }
-        .header-section p { color: #64748b; font-size: 1.1rem; margin-top: 5px; margin-bottom: 0; }
-
-        .logout-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: 1px solid #cbd5e1;
-            padding: 6px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        /* Vertical Tracks Layout */
+        /* --- VERTICAL ACCORDION BLUEPRINT LAYOUT --- */
         .timeline-container {
             display: flex;
             flex-direction: column;
@@ -109,29 +141,56 @@
 
         .track-row {
             background: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-radius: 14px;
+            border: 2px solid var(--border);
             overflow: hidden;
             transition: all 0.3s ease;
         }
 
         .track-header {
             padding: 1.5rem;
-            background: #f8fafc;
+            background: #fafafa;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             user-select: none;
+            transition: background 0.2s ease;
         }
-        .track-header h3 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
-        .track-header p { margin: 5px 0 0 0; font-size: 0.85rem; color: #64748b; }
-        .chevron { font-size: 1.2rem; transition: transform 0.3s ease; color: #94a3b8; }
+        .track-header:hover {
+            background: #f4f6f9;
+        }
+        .track-header h3 { 
+            font-size: 1.3rem; 
+            color: var(--text); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        .track-header p { 
+            margin-top: 4px; 
+            font-size: 0.9rem; 
+            color: var(--text-muted); 
+        }
+        .chevron { 
+            font-size: 1.2rem; 
+            transition: transform 0.3s ease; 
+            color: var(--text-muted); 
+        }
 
-        .track-row.active { border-color: var(--accent-teal); }
-        .track-row.active .track-header { background: #f0f7f7; border-bottom: 1px solid var(--border-color); }
-        .track-row.active .chevron { transform: rotate(180deg); color: var(--accent-teal); }
+        /* Active Expanded States */
+        .track-row.active {
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.08);
+        }
+        .track-row.active .track-header {
+            background: #f0fdf4; /* Match active success highlights */
+            border-bottom: 2px solid var(--border);
+        }
+        .track-row.active .chevron {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
 
         .track-content {
             display: none;
@@ -144,71 +203,255 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .panel-grid {
+        /* Double Column Dashboard Grid */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 20px;
-        }
-        @media (max-width: 650px) {
-            .panel-grid { grid-template-columns: 1fr; }
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
 
-        .panel-sub-box {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
+        @media (min-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1.2fr 1fr;
+            }
+        }
+
+        .card {
+            background: #fafafa;
+            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 1.2rem;
-            margin-bottom: 15px;
+            padding: 1.5rem;
         }
-        .panel-sub-box h4 { margin-top: 0; margin-bottom: 12px; font-size: 1rem; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;}
 
-        /* Metrics & Estimator Styling */
-        .metrics-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .estimator-select {
-            width: 100%;
-            padding: 6px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background: white;
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
             font-size: 0.9rem;
-            margin-top: 5px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .progress-bar-bg {
+            background: var(--border);
+            border-radius: 8px;
+            height: 12px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            background: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
         }
 
-        /* Checklist & Progress Styles */
-        .progress-bar-bg { background: #e2e8f0; height: 6px; border-radius: 3px; overflow: hidden; margin: 8px 0 15px 0; }
-        .progress-bar-fill { background: var(--accent-teal); height: 100%; transition: width 0.3s ease; }
-        
-        .todo-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.9rem; }
-        .todo-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent-teal); cursor: pointer; }
-
-        .vault-link { display: block; font-size: 0.85rem; color: #0284c7; text-decoration: none; font-weight: 500; margin-bottom: 8px; }
-        .vault-link:hover { text-decoration: underline; }
-
-        .pitch-preview-box {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
+        /* Checkbox lists */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .check-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 1rem;
-            font-family: monospace;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+        .check-item input[type="checkbox"] {
+            margin-top: 0.25rem;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .check-item-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+        .check-item-text p {
             font-size: 0.85rem;
-            line-height: 1.5;
-            color: #334155;
-            white-space: pre-line;
-            margin-bottom: 12px;
-            max-height: 250px;
-            overflow-y: auto;
+            color: var(--text-muted);
         }
 
-        .action-btn {
+        /* Success Banner */
+        .success-banner {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* Resource Grid */
+        .resource-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .resource-item {
+            background: var(--card-bg);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .resource-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .resource-item a:hover {
+            text-decoration: underline;
+        }
+        .resource-tag {
+            font-size: 0.75rem;
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Calculator controls */
+        .calc-group {
+            margin-top: 1rem;
+        }
+        .calc-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .calc-group input[type="range"] {
             width: 100%;
-            padding: 12px;
-            background: var(--accent-orange);
+            margin-bottom: 0.5rem;
+        }
+        .stat-display {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-top: 0.5rem;
+        }
+
+        /* Pitch Generator Button */
+        .action-btn {
+            background: var(--accent);
             color: white;
             border: none;
+            padding: 1rem;
             border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: bold;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease;
+            margin-top: 1rem;
+        }
+        .action-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Modal Overlay Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal {
+            background: var(--card-bg);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            padding: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        .modal-header h3 {
+            color: var(--primary);
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .pitch-box {
+            width: 100%;
+            height: 250px;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #f9fafb;
+            font-family: monospace;
+            font-size: 0.9rem;
+            resize: none;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        .modal-footer {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+        .modal-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: #fff;
+        }
+        .modal-btn.primary {
+            background: var(--primary);
+            color: white;
+            border: none;
         }
         
         .toggle-text { margin-top: 15px; font-size: 14px; color: #555; cursor: pointer; text-decoration: underline; }
@@ -216,6 +459,7 @@
 </head>
 <body>
 
+    <!-- 1. Authentication Stage -->
     <div class="auth-container" id="authSection">
         <h2 id="formTitle">Sign Up</h2>
         <form id="authForm" onsubmit="handleAuth(event)">
@@ -226,15 +470,17 @@
         <p class="toggle-text" onclick="toggleMode()" id="toggleBtn">Already have an account? Sign In</p>
     </div>
 
-    <div id="dashboard">
-        <div class="header-section">
+    <!-- 2. Main Vertical Timeline Dashboard Interface -->
+    <div class="container" id="dashboard" style="display: none;">
+        <header>
             <button class="logout-btn" onclick="handleLogout()">Log Out</button>
-            <h1>DIGITAL MONEY <span>LAUNCHPAD</span></h1>
+            <h1>Digital Money <span>LaunchPad</span></h1>
             <p>Your Digital Income Roadmap</p>
-        </div>
+        </header>
 
         <div class="timeline-container">
             
+            <!-- TRACK 01: THE WRITER -->
             <div class="track-row" id="track-writer">
                 <div class="track-header" onclick="toggleTrackSection('writer')">
                     <div>
@@ -244,56 +490,88 @@
                     <div class="chevron">▼</div>
                 </div>
                 <div class="track-content" id="content-writer">
-                    <div class="panel-grid">
-                        <div>
-                            <div class="panel-sub-box">
-                                <h4>Portfolio Readiness</h4>
-                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Lead Gen Thread</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 2: Landing Page Copy</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 3: Email Newsletter</span></div>
+                    <div class="dashboard-grid">
+                        
+                        <!-- Left Side: Custom Checklist with Leather Bag Emoji -->
+                        <div class="card">
+                            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
+                            <div id="successBanner-writer" class="success-banner">
+                                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
                             </div>
-                            <div class="panel-sub-box">
-                                <h4>Free Learning Vault</h4>
-                                <a href="https://academy.hubspot.com/" target="_blank" class="vault-link">🔵 HubSpot Academy Certification ↗</a>
-                                <a href="https://www.youtube.com/@AlexCattoni" target="_blank" class="vault-link">🔴 Alex Cattoni Copywriting Tutorials ↗</a>
-                                <a href="https://smartblogger.com/" target="_blank" class="vault-link">🔵 SmartBlogger Strategy Frameworks ↗</a>
-                            </div>
-                            <div class="metrics-split">
-                                <div class="panel-sub-box">
-                                    <h4>Daily Dedication</h4>
-                                    <select class="estimator-select" onchange="calculateTimeToValue('writer', this.value)">
-                                        <option value="2">2 Hours / day</option>
-                                        <option value="4" selected>4 Hours / day</option>
-                                        <option value="6">6 Hours / day</option>
-                                    </select>
+                            <div class="progress-container">
+                                <div class="progress-text">
+                                    <span id="progressCount-writer">0 of 3 Projects Done</span>
+                                    <span id="progressPercent-writer">0%</span>
                                 </div>
-                                <div class="panel-sub-box"><h4>Time to Value</h4><strong id="ttv-writer" style="color:var(--accent-orange);">~4 weeks</strong></div>
-                            </div>
-                        </div>
-                        <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
-                            <div>
-                                <h4>Content & Copywriting Pitch</h4>
-                                <div class="pitch-preview-box">
-                                    Hi [Client Name],
-
-                                    I’ve been following your brand, and I noticed an explicit opportunity to scale up your asset engagement rates by expanding your recent articles into high-converting email autoresponder sequences.
-
-                                    I drafted a quick 3-part newsletter layout customized for your audience that you can review right here:
-                                    [Link to Sample Copy Outline]
-
-                                    Would you be open to a 5-minute chat next week to see how we can implement this sequence for your launch setup?
-
-                                    Best regards,
-                                    [Your Name]
+                                <div class="progress-bar-bg">
+                                    <div id="progressBar-writer" class="progress-bar-fill"></div>
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Writer pitch framework finalized and copied!')">Generate Custom Pitch Template</button>
+                            <div class="checklist">
+                                <div class="check-item">
+                                    <input type="checkbox" id="writer-proj-0" onchange="updateTrackProgress('writer')">
+                                    <div class="check-item-text">
+                                        <h4>Project 1: Social Media Kit</h4>
+                                        <p>Write 5 high-engagement Instagram captions for a local fitness business blueprint.</p>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <input type="checkbox" id="writer-proj-1" onchange="updateTrackProgress('writer')">
+                                    <div class="check-item-text">
+                                        <h4>Project 2: SEO Blog Post</h4>
+                                        <p>Draft a clean, structured 1000-word educational article focused on remote work productivity tools.</p>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <input type="checkbox" id="writer-proj-2" onchange="updateTrackProgress('writer')">
+                                    <div class="check-item-text">
+                                        <h4>Project 3: Brand Email Sequence</h4>
+                                        <p>Write a high-converting 3-part cold/welcome autoresponder flow for a mockup skincare line.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Right Side: Vault & Estimator -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="card">
+                                <h2 class="section-title">🎓 Free Learning Vault</h2>
+                                <div class="resource-list">
+                                    <div class="resource-item">
+                                        <a href="https://academy.hubspot.com/" target="_blank">HubSpot Content Marketing &nearr;</a>
+                                        <span class="resource-tag">Free Course</span>
+                                    </div>
+                                    <div class="resource-item">
+                                        <a href="https://www.youtube.com/@AlexCattoni" target="_blank">Alex Cattoni Copywriting &nearr;</a>
+                                        <span class="resource-tag">YouTube Channel</span>
+                                    </div>
+                                    <div class="resource-item">
+                                        <a href="https://smartblogger.com/" target="_blank">Jon Morrow Blog Blueprint &nearr;</a>
+                                        <span class="resource-tag">Guides</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h2 class="section-title">⏳ Time-to-Value Estimator</h2>
+                                <div class="calc-group">
+                                    <label for="slider-writer">Daily Dedication: <span id="hoursVal-writer">4</span> hours</label>
+                                    <input type="range" id="slider-writer" min="1" max="8" value="4" oninput="calculateTrackTimeline('writer')">
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Realistically launch your track in:</p>
+                                    <div class="stat-display" id="display-writer">~4 weeks</div>
+                                </div>
+                            </div>
+
+                            <button class="action-btn" onclick="openPitchModal('writer')">
+                                💬 Generate Custom Pitch Template
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
 
+            <!-- TRACK 02: THE CREATIVE -->
             <div class="track-row active" id="track-creative">
                 <div class="track-header" onclick="toggleTrackSection('creative')">
                     <div>
@@ -303,56 +581,88 @@
                     <div class="chevron">▼</div>
                 </div>
                 <div class="track-content" id="content-creative" style="display: block;">
-                    <div class="panel-grid">
-                        <div>
-                            <div class="panel-sub-box">
-                                <h4>Portfolio Readiness</h4>
-                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 66%;"></div></div>
-                                <div class="todo-item"><input type="checkbox" checked> <span>Project 1: Thumbnails</span></div>
-                                <div class="todo-item"><input type="checkbox" checked> <span>Project 2: Carousels</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 3: Video Edit</span></div>
+                    <div class="dashboard-grid">
+                        
+                        <!-- Left Side: Checklist -->
+                        <div class="card">
+                            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
+                            <div id="successBanner-creative" class="success-banner">
+                                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
                             </div>
-                            <div class="panel-sub-box">
-                                <h4>Free Learning Vault</h4>
-                                <a href="https://www.canva.com/design-school/" target="_blank" class="vault-link">🔵 Canva Design School ↗</a>
-                                <a href="https://www.youtube.com/@envatotuts" target="_blank" class="vault-link">🔴 Envato Tuts+ Video Editing ↗</a>
-                                <a href="https://www.youtube.com/@GarethDavidStudio" target="_blank" class="vault-link">🔴 Gareth David Studio Design ↗</a>
-                            </div>
-                            <div class="metrics-split">
-                                <div class="panel-sub-box">
-                                    <h4>Daily Dedication</h4>
-                                    <select class="estimator-select" onchange="calculateTimeToValue('creative', this.value)">
-                                        <option value="2">2 Hours / day</option>
-                                        <option value="4" selected>4 Hours / day</option>
-                                        <option value="6">6 Hours / day</option>
-                                    </select>
+                            <div class="progress-container">
+                                <div class="progress-text">
+                                    <span id="progressCount-creative">0 of 3 Projects Done</span>
+                                    <span id="progressPercent-creative">0%</span>
                                 </div>
-                                <div class="panel-sub-box"><h4>Time to Value</h4><strong id="ttv-creative" style="color:var(--accent-orange);">~4 weeks</strong></div>
-                            </div>
-                        </div>
-                        <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
-                            <div>
-                                <h4>Social Media Video Edit Pitch</h4>
-                                <div class="pitch-preview-box">
-                                    Hi [Client Name],
-
-                                    I loved your recent short-form clip, but noticed that a tighter retention hook and active visual pacing could easily boost your viewer retention by 35%.
-
-                                    To show you exactly what I mean, I went ahead and edited a high-energy, 30-second variant of your profile's asset with custom animations:
-                                    [Link to Your Practice Video Edit]
-
-                                    If you like this layout pacing, let me know if I can handle the editing pipeline for your next 3 asset drops completely free to prove value.
-
-                                    Best regards,
-                                    [Your Name]
+                                <div class="progress-bar-bg">
+                                    <div id="progressBar-creative" class="progress-bar-fill"></div>
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Creative pitch template finalized and copied!')">Generate Custom Pitch Template</button>
+                            <div class="checklist">
+                                <div class="check-item">
+                                    <input type="checkbox" id="creative-proj-0" onchange="updateTrackProgress('creative')">
+                                    <div class="check-item-text">
+                                        <h4>Project 1: YouTube Thumbnails</h4>
+                                        <p>Design 3 high-CTR custom thumbnail variants for a tech reviewer persona using Canva grids.</p>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <input type="checkbox" id="creative-proj-1" onchange="updateTrackProgress('creative')">
+                                    <div class="check-item-text">
+                                        <h4>Project 2: Educational Carousel</h4>
+                                        <p>Create a conversion-focused 5-slide visual slide pack for an executive coach ecosystem.</p>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <input type="checkbox" id="creative-proj-2" onchange="updateTrackProgress('creative')">
+                                    <div class="check-item-text">
+                                        <h4>Project 3: Micro-Video Content</h4>
+                                        <p>Edit a raw 1-minute video file into an optimized TikTok/Reel layout with manual captions.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Right Side: Vault & Estimator -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="card">
+                                <h2 class="section-title">🎓 Free Learning Vault</h2>
+                                <div class="resource-list">
+                                    <div class="resource-item">
+                                        <a href="https://www.canva.com/design-school/" target="_blank">Canva Design School &nearr;</a>
+                                        <span class="resource-tag">Free Course</span>
+                                    </div>
+                                    <div class="resource-item">
+                                        <a href="https://www.youtube.com/@envatotuts" target="_blank">Envato Tuts+ &nearr;</a>
+                                        <span class="resource-tag">YouTube Channel</span>
+                                    </div>
+                                    <div class="resource-item">
+                                        <a href="https://www.youtube.com/@GarethDavidStudio" target="_blank">Gareth David Studio &nearr;</a>
+                                        <span class="resource-tag">YouTube Channel</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h2 class="section-title">⏳ Time-to-Value Estimator</h2>
+                                <div class="calc-group">
+                                    <label for="slider-creative">Daily Dedication: <span id="hoursVal-creative">4</span> hours</label>
+                                    <input type="range" id="slider-creative" min="1" max="8" value="4" oninput="calculateTrackTimeline('creative')">
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Realistically launch your track in:</p>
+                                    <div class="stat-display" id="display-creative">~4 weeks</div>
+                                </div>
+                            </div>
+
+                            <button class="action-btn" onclick="openPitchModal('creative')">
+                                💬 Generate Custom Pitch Template
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
 
+            <!-- TRACK 03: THE TECH-CURIOUS -->
             <div class="track-row" id="track-tech">
                 <div class="track-header" onclick="toggleTrackSection('tech')">
                     <div>
@@ -362,56 +672,88 @@
                     <div class="chevron">▼</div>
                 </div>
                 <div class="track-content" id="content-tech">
-                    <div class="panel-grid">
-                        <div>
-                            <div class="panel-sub-box">
-                                <h4>Portfolio Readiness</h4>
-                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Lead Capture Setup</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 2: Webhook Automation Map</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 3: AI Assistant Sandbox</span></div>
+                    <div class="dashboard-grid">
+                        
+                        <!-- Left Side: Checklist -->
+                        <div class="card">
+                            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
+                            <div id="successBanner-tech" class="success-banner">
+                                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
                             </div>
-                            <div class="panel-sub-box">
-                                <h4>Free Learning Vault</h4>
-                                <a href="https://grow.google/intl/ssa-en/" target="_blank" class="vault-link">🔵 Google Career Certificates ↗</a>
-                                <a href="https://www.freecodecamp.org/" target="_blank" class="vault-link">🔥 freeCodeCamp Developer Curriculum ↗</a>
-                                <a href="https://www.youtube.com/@DocWilliams" target="_blank" class="vault-link">🔴 Doc Williams No-Code Business Tools ↗</a>
-                            </div>
-                            <div class="metrics-split">
-                                <div class="panel-sub-box">
-                                    <h4>Daily Dedication</h4>
-                                    <select class="estimator-select" onchange="calculateTimeToValue('tech', this.value)">
-                                        <option value="2">2 Hours / day</option>
-                                        <option value="4" selected>4 Hours / day</option>
-                                        <option value="6">6 Hours / day</option>
-                                    </select>
+                            <div class="progress-container">
+                                <div class="progress-text">
+                                    <span id="progressCount-tech">0 of 3 Projects Done</span>
+                                    <span id="progressPercent-tech">0%</span>
                                 </div>
-                                <div class="panel-sub-box"><h4>Time to Value</h4><strong id="ttv-tech" style="color:var(--accent-orange);">~4 weeks</strong></div>
-                            </div>
-                        </div>
-                        <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
-                            <div>
-                                <h4>Automation Setup Pitch</h4>
-                                <div class="pitch-preview-box">
-                                    Hi [Client Name],
-
-                                    I mapped out a clean, zero-maintenance background workflow blueprint designed to seamlessly funnel your lead inquiries straight into your core operational pipeline without manual input.
-
-                                    You can check out the step-by-step logic loop and systemic trigger diagrams I built for your app parameters right here:
-                                    [Link to Workflow Architecture Screenshot]
-
-                                    Let me know if you want me to spin this engine live in your ecosystem today—it takes less than 20 minutes to launch.
-
-                                    Best regards,
-                                    [Your Name]
+                                <div class="progress-bar-bg">
+                                    <div id="progressBar-tech" class="progress-bar-fill"></div>
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Automation pitch template finalized and copied!')">Generate Custom Pitch Template</button>
+                            <div class="checklist">
+                                <div class="check-item">
+                                    <input type="checkbox" id="tech-proj-0" onchange="updateTrackProgress('tech')">
+                                    <div class="check-item-text">
+                                        <h4>Project 1: Merchant Landing Page</h4>
+                                        <p>Build a single-page localized commercial shop page layout using modern Carrd/Notion systems.</p>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <input type="checkbox" id="tech-proj-1" onchange="updateTrackProgress('tech')">
+                                    <div class="check-item-text">
+                                        <h4>Project 2: Webhooks Connection</h4>
+                                        <p>Configure an operational automation linking a Google Form submission directly to custom email engines via Make/Zapier.</p>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <input type="checkbox" id="tech-proj-2" onchange="updateTrackProgress('tech')">
+                                    <div class="check-item-text">
+                                        <h4>Project 3: Interactive Dashboard</h4>
+                                        <p>Design a clean database reporting sheet template to clean up small business pipeline visibility.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Right Side: Vault & Estimator -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="card">
+                                <h2 class="section-title">🎓 Free Learning Vault</h2>
+                                <div class="resource-list">
+                                    <div class="resource-item">
+                                        <a href="https://grow.google/intl/ssa-en/" target="_blank">Grow with Google Track &nearr;</a>
+                                        <span class="resource-tag">Free Cert</span>
+                                    </div>
+                                    <div class="resource-item">
+                                        <a href="https://www.freecodecamp.org/" target="_blank">freeCodeCamp Systems &nearr;</a>
+                                        <span class="resource-tag">Interactive</span>
+                                    </div>
+                                    <div class="resource-item">
+                                        <a href="https://www.youtube.com/@DocWilliams" target="_blank">Doc Williams No-Code &nearr;</a>
+                                        <span class="resource-tag">YouTube Channel</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h2 class="section-title">⏳ Time-to-Value Estimator</h2>
+                                <div class="calc-group">
+                                    <label for="slider-tech">Daily Dedication: <span id="hoursVal-tech">4</span> hours</label>
+                                    <input type="range" id="slider-tech" min="1" max="8" value="4" oninput="calculateTrackTimeline('tech')">
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Realistically launch your track in:</p>
+                                    <div class="stat-display" id="display-tech">~4 weeks</div>
+                                </div>
+                            </div>
+
+                            <button class="action-btn" onclick="openPitchModal('tech')">
+                                💬 Generate Custom Pitch Template
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
 
+            <!-- TRACK 04: THE ORGANIZER -->
             <div class="track-row" id="track-organizer">
                 <div class="track-header" onclick="toggleTrackSection('organizer')">
                     <div>
@@ -421,52 +763,83 @@
                     <div class="chevron">▼</div>
                 </div>
                 <div class="track-content" id="content-organizer">
-                    <div class="panel-grid">
-                        <div>
-                            <div class="panel-sub-box">
-                                <h4>Portfolio Readiness</h4>
-                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Team Board Layout</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 2: Calendar System Setup</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 3: Client Onboarding SOP</span></div>
+                    <div class="dashboard-grid">
+                        
+                        <!-- Left Side: Checklist -->
+                        <div class="card">
+                            <h2 class="section-title">💼 Portfolio Project Checklist</h2>
+                            <div id="successBanner-organizer" class="success-banner">
+                                🎉 Portfolio 100% Complete! You are ready to copy your outreach script and pitch clients.
                             </div>
-                            <div class="panel-sub-box">
-                                <h4>Free Learning Vault</h4>
-                                <a href="https://support.google.com/a/users/answer/9283050" target="_blank" class="vault-link">🔵 Google Workspace Admin Deployment ↗</a>
-                                <a href="https://www.youtube.com/@ErinBooth" target="_blank" class="vault-link">🔴 Erin Booth Executive VA Training ↗</a>
-                                <a href="https://academy.asana.com/" target="_blank" class="vault-link">🔵 Asana Academy Operations Certification ↗</a>
-                            </div>
-                            <div class="metrics-split">
-                                <div class="panel-sub-box">
-                                    <h4>Daily Dedication</h4>
-                                    <select class="estimator-select" onchange="calculateTimeToValue('organizer', this.value)">
-                                        <option value="2">2 Hours / day</option>
-                                        <option value="4" selected>4 Hours / day</option>
-                                        <option value="6">6 Hours / day</option>
-                                    </select>
+                            <div class="progress-container">
+                                <div class="progress-text">
+                                    <span id="progressCount-organizer">0 of 3 Projects Done</span>
+                                    <span id="progressPercent-organizer">0%</span>
                                 </div>
-                                <div class="panel-sub-box"><h4>Time to Value</h4><strong id="ttv-organizer" style="color:var(--accent-orange);">~4 weeks</strong></div>
-                            </div>
-                        </div>
-                        <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
-                            <div>
-                                <h4>Systems Audit Proposal</h4>
-                                <div class="pitch-preview-box">
-                                    Hi [Client Name],
-
-                                    I specialize in structural operations auditing, and noticed a few bottlenecks inside your workflow entry points that could easily be streamlined to reduce administrative friction by nearly 40%.
-
-                                    I compiled a simple, plug-and-play Standard Operating Procedure template for management structures that you can skim here:
-                                    [Link to Sample Operations Guideline]
-
-                                    Let me know if you are free for a quick sync this week to explore implementing these structural layouts.
-
-                                    Best regards,
-                                    [Your Name]
+                                <div class="progress-bar-bg">
+                                    <div id="progressBar-organizer" class="progress-bar-fill"></div>
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Operations pitch template finalized and copied!')">Generate Custom Pitch Template</button>
+                            <div class="checklist">
+                                <div class="check-item">
+                                    <input type="checkbox" id="organizer-proj-0" onchange="updateTrackProgress('organizer')">
+                                    <div class="check-item-text">
+                                        <h4>Project 1: Inbox Architecture</h4>
+                                        <p>Map a multi-tier client labeling, archiving, and prioritizing filter model for a high-volume executive.</p>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <input type="checkbox" id="organizer-proj-1" onchange="updateTrackProgress('organizer')">
+                                    <div class="check-item-text">
+                                        <h4>Project 2: Master Business Itinerary</h4>
+                                        <p>Draft a comprehensive 5-day multi-tier trip logistics spreadsheet map including confirmation points.</p>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <input type="checkbox" id="organizer-proj-2" onchange="updateTrackProgress('organizer')">
+                                    <div class="check-item-text">
+                                        <h4>Project 3: System Calendar Audit</h4>
+                                        <p>Build a structural weekly schedule block asset optimizing external scheduling pipelines.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Right Side: Vault & Estimator -->
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div class="card">
+                                <h2 class="section-title">🎓 Free Learning Vault</h2>
+                                <div class="resource-list">
+                                    <div class="resource-item">
+                                        <a href="https://support.google.com/a/users/answer/9283050" target="_blank">Google Workspace Learning Center &nearr;</a>
+                                        <span class="resource-tag">Free Training</span>
+                                    </div>
+                                    <div class="resource-item">
+                                        <a href="https://www.youtube.com/@ErinBooth" target="_blank">Erin Booth VA Mastery &nearr;</a>
+                                        <span class="resource-tag">YouTube Channel</span>
+                                    </div>
+                                    <div class="resource-item">
+                                        <a href="https://academy.asana.com/" target="_blank">Asana Academy Core &nearr;</a>
+                                        <span class="resource-tag">Free Cert</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h2 class="section-title">⏳ Time-to-Value Estimator</h2>
+                                <div class="calc-group">
+                                    <label for="slider-organizer">Daily Dedication: <span id="hoursVal-organizer">4</span> hours</label>
+                                    <input type="range" id="slider-organizer" min="1" max="8" value="4" oninput="calculateTrackTimeline('organizer')">
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Realistically launch your track in:</p>
+                                    <div class="stat-display" id="display-organizer">~4 weeks</div>
+                                </div>
+                            </div>
+
+                            <button class="action-btn" onclick="openPitchModal('organizer')">
+                                💬 Generate Custom Pitch Template
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -474,8 +847,43 @@
         </div>
     </div>
 
+    <!-- 3. Dynamic Template Modal Overlay Structure -->
+    <div class="modal-overlay" id="pitchModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Custom Pitch Template</h3>
+                <button class="modal-close" onclick="closePitchModal()">&times;</button>
+            </div>
+            <textarea class="pitch-box" id="pitchTextarea" readonly></textarea>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closePitchModal()">Close</button>
+                <button class="modal-btn primary" onclick="copyPitchText()">Copy Template</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- BACKEND API INITIALIZATION ---
+        // --- DATA DICTIONARY ---
+        const appData = {
+            writer: {
+                title: "The Writer",
+                pitch: "Subject: Quick idea for [Client Name]'s social media content\n\nHi [Client Name],\n\nI love your recent content on [Their Specific Social Profile], especially your angle regarding industry trends. I noticed an open opportunity to step up the formatting structure of your written captions to boost user save rates.\n\nI actually drafted up a mock 5-post caption strategy kit specifically optimized for your target audience profile. You can check it out completely free here: [Link to Your Practice Kit]\n\nIf you find value in this roadmap design, I'd love to chat for 10 minutes next week to see how we could scale your asset production workflow.\n\nBest regards,\n[Your Name]"
+            },
+            creative: {
+                title: "The Creative",
+                pitch: "Subject: Short-form video edit idea for [Client Name]\n\nHi [Client Name],\n\nI caught your latest video file on [Their Specific Social Profile] and loved the core insight. To see how it would translate into a high-retention vertical format, I took a 45-second snippet and edited it into a structured video outline with native dynamic text hooks.\n\nYou can view the processed test run sample directly here: [Link to Your Practice Video Edit]\n\nI help brands clean up their micro-video pipelines to capture visual traffic. Let me know if you like the visual design style, and we can discuss scheduling a brief sync session!\n\nBest,\n[Your Name]"
+            },
+            tech: {
+                title: "The Tech-Curious",
+                pitch: "Subject: Enhancing your business automation workflow / [Client Name]\n\nHi [Client Name],\n\nI was looking through your modern product landing page flows and noticed a small automated step that could be optimized to systematically nurture leads without manual tracking overhead.\n\nI created a quick functional system architecture map detailing how a simple web handler can directly manage validation confirmations instantly. You can view the layout here: [Link to Your Practice Web Interface/Sheet]\n\nI focus on deploying technical optimizations for scaling brands. If you are open to making your operations a bit more lightweight this month, let's connect for 10 minutes.\n\nCheers,\n[Your Name]"
+            },
+            organizer: {
+                title: "The Organizer",
+                pitch: "Subject: Operations / Scheduling optimization project review for [Client Name]\n\nHi [Client Name],\n\nAs an executive navigating a growing calendar footprint, administrative friction can quickly impact core delivery blocks. I put together an optimized weekly calendar audit model demonstrating how automated workflow funnels can protect focus time.\n\nI built a framework mapping this layout out which you can check over here: [Link to Your System Strategy Blueprint]\n\nI specialize in helping founders streamline operational overhead. Let me know if you would like to test this layout architecture in your setup!\n\nBest regards,\n[Your Name]"
+            }
+        };
+
+        // --- BACKEND API PIPELINE ---
         const SUPABASE_URL = "https://pdjvbtibzlwpxiknciub.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkanZidGliemx3cHhpa25jaXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNDgwMTYsImV4cCI6MjA5NzgyNDAxNn0.2B1GEkU2ijyCOgbkrDdvO8f9XYOzqyLUmCizy_ltBtU";
         
@@ -543,17 +951,83 @@
             }
         }
 
-        // --- TIME TO VALUE EVALUATOR FUNCTION ---
-        function calculateTimeToValue(track, hours) {
-            const targetElement = document.getElementById('ttv-' + track);
-            if (hours === "2") {
-                targetElement.innerText = "~8 weeks";
-            } else if (hours === "4") {
-                targetElement.innerText = "~4 weeks";
-            } else if (hours === "6") {
-                targetElement.innerText = "~2.5 weeks";
+        // --- PORTFOLIO CHECKLIST TRACKER (Isolated per Track) ---
+        function updateTrackProgress(trackId) {
+            const p0 = document.getElementById(`${trackId}-proj-0`).checked;
+            const p1 = document.getElementById(`${trackId}-proj-1`).checked;
+            const p2 = document.getElementById(`${trackId}-proj-2`).checked;
+            
+            let checkedCount = 0;
+            if (p0) checkedCount++;
+            if (p1) checkedCount++;
+            if (p2) checkedCount++;
+
+            const pct = Math.round((checkedCount / 3) * 100);
+
+            document.getElementById(`progressBar-${trackId}`).style.width = `${pct}%`;
+            document.getElementById(`progressPercent-${trackId}`).innerText = `${pct}%`;
+            document.getElementById(`progressCount-${trackId}`).innerText = `${checkedCount} of 3 Projects Done`;
+
+            const banner = document.getElementById(`successBanner-${trackId}`);
+            if (checkedCount === 3) {
+                banner.style.display = 'block';
+            } else {
+                banner.style.display = 'none';
             }
         }
+
+        // --- TIME TO VALUE RANGE CALCULATOR (Isolated per Track) ---
+        function calculateTrackTimeline(trackId) {
+            const hours = document.getElementById(`slider-${trackId}`).value;
+            document.getElementById(`hoursVal-${trackId}`).innerText = hours;
+
+            let dynamicTimeline = "~8 weeks";
+            if (hours >= 3 && hours <= 4) dynamicTimeline = "~4 weeks";
+            else if (hours >= 5 && hours <= 6) dynamicTimeline = "~3 weeks";
+            else if (hours > 6) dynamicTimeline = "~2 weeks!";
+
+            document.getElementById(`display-${trackId}`).innerText = dynamicTimeline;
+        }
+
+        // --- PITCH SCRIPTS POP-UP MODAL LAYER ---
+        let targetModalPath = 'writer';
+
+        function openPitchModal(trackKey) {
+            targetModalPath = trackKey;
+            const modal = document.getElementById('pitchModal');
+            const data = appData[trackKey];
+
+            document.getElementById('modalTitle').innerText = `${data.title} Pitch Script Template`;
+            document.getElementById('pitchTextarea').value = data.pitch;
+
+            modal.classList.add('open');
+        }
+
+        function closePitchModal() {
+            document.getElementById('pitchModal').classList.remove('open');
+        }
+
+        function copyPitchText() {
+            const txtArea = document.getElementById('pitchTextarea');
+            txtArea.select();
+            txtArea.setSelectionRange(0, 99999);
+            document.execCommand('copy'); // Guaranteed cross-origin iframe copy operation fallback
+            alert('Template script copied straight to clipboard!');
+        }
+
+        // Initial launch configurations on body display ready
+        window.onload = function() {
+            // Setup default active values on launch
+            updateTrackProgress('writer');
+            updateTrackProgress('creative');
+            updateTrackProgress('tech');
+            updateTrackProgress('organizer');
+
+            calculateTrackTimeline('writer');
+            calculateTrackTimeline('creative');
+            calculateTrackTimeline('tech');
+            calculateTrackTimeline('organizer');
+        };
     </script>
 </body>
 </html>
