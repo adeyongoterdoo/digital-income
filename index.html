@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Money Launchpad</title>
+    <title>Digital Income Launchpad</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
@@ -61,37 +61,37 @@
             margin-top: 10px; 
         }
 
-        /* --- DASHBOARD BOARD INTERFACE --- */
+        /* --- VERTICAL DASHBOARD INTERFACE --- */
         #dashboard { 
             display: none; 
             width: 95%; 
-            max-width: 1100px; 
-            background: var(--card-bg); 
-            border-radius: 24px; 
-            padding: 2.5rem; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            max-width: 800px; 
+            margin: 30px auto;
             box-sizing: border-box;
-            margin: 20px auto;
         }
 
         .header-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
             text-align: center;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
             position: relative;
         }
         .header-section h1 {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             font-weight: 800;
             margin: 0;
             letter-spacing: -1px;
         }
         .header-section h1 span { color: var(--accent-orange); }
-        .header-section p { color: #64748b; font-size: 1.1rem; margin-top: 5px; }
+        .header-section p { color: #64748b; font-size: 1.1rem; margin-top: 5px; margin-bottom: 0; }
 
         .logout-btn {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: 20px;
+            right: 20px;
             background: none;
             border: 1px solid #cbd5e1;
             padding: 6px 14px;
@@ -100,92 +100,115 @@
             font-size: 13px;
         }
 
-        /* 4 Track Choices Grid */
-        .tracks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 2rem;
+        /* Vertical Tracks Timeline Block */
+        .timeline-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
-        .track-card {
+
+        .track-row {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Track Header Control */
+        .track-header {
+            padding: 1.5rem;
             background: #f8fafc;
-            border: 2px solid var(--border-color);
-            border-radius: 14px;
-            padding: 1.2rem;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            user-select: none;
         }
-        .track-card.active {
-            background: var(--accent-teal);
-            color: white;
+        .track-header h3 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+        .track-header p { margin: 5px 0 0 0; font-size: 0.85rem; color: #64748b; }
+        .chevron { font-size: 1.2rem; transition: transform 0.3s ease; color: #94a3b8; }
+
+        /* Expanded State Modifiers */
+        .track-row.active {
             border-color: var(--accent-teal);
         }
-        .track-card h3 { margin: 8px 0 4px 0; font-size: 1.1rem; }
-        .track-card p { margin: 0; font-size: 0.85rem; opacity: 0.8; }
+        .track-row.active .track-header {
+            background: #f0f7f7;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .track-row.active .chevron {
+            transform: rotate(180deg);
+            color: var(--accent-teal);
+        }
 
-        /* Workspace Core Splits */
-        .workspace-layout {
+        /* Hidden Content Canvas */
+        .track-content {
+            display: none;
+            padding: 2rem;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Panel Splitting Inside Accordion */
+        .panel-grid {
             display: grid;
-            grid-template-columns: 1.6fr 1.4fr;
-            gap: 25px;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
         }
-        @media (max-width: 768px) {
-            .workspace-layout { grid-template-columns: 1fr; }
+        @media (max-width: 650px) {
+            .panel-grid { grid-template-columns: 1fr; }
         }
 
-        .left-column { display: flex; flex-direction: column; gap: 20px; }
-
-        .panel {
+        .panel-sub-box {
             background: #f8fafc;
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-        }
-        .panel h4 { margin-top: 0; margin-bottom: 15px; font-size: 1.1rem; color: #1e293b; }
-
-        /* Progress Bar styles */
-        .progress-container { margin-bottom: 15px; }
-        .progress-meta { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; }
-        .progress-bar-bg { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; }
-        .progress-bar-fill { background: var(--accent-teal); height: 100%; width: 66%; transition: width 0.3s ease; }
-
-        /* Checklists */
-        .todo-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 0.95rem; }
-        .todo-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent-teal); cursor: pointer; }
-
-        /* Links Grid */
-        .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .vault-link { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #0284c7; text-decoration: none; font-weight: 500; }
-
-        /* Pitch Section Box styling */
-        .pitch-preview-box {
-            background: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 1.2rem;
+            margin-bottom: 15px;
+        }
+        .panel-sub-box h4 { margin-top: 0; margin-bottom: 12px; font-size: 1rem; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;}
+
+        /* Portfolio Progress Checklist elements */
+        .progress-bar-bg { background: #e2e8f0; height: 6px; border-radius: 3px; overflow: hidden; margin: 8px 0 15px 0; }
+        .progress-bar-fill { background: var(--accent-teal); height: 100%; transition: width 0.3s ease; }
+        
+        .todo-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.9rem; }
+        .todo-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent-teal); cursor: pointer; }
+
+        /* Learning Vault links */
+        .vault-link { display: block; font-size: 0.85rem; color: #0284c7; text-decoration: none; font-weight: 500; margin-bottom: 8px; }
+        .vault-link:hover { text-decoration: underline; }
+
+        /* Proposal Box & Action Button UI */
+        .pitch-preview-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
             font-family: monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: 0.85rem;
+            line-height: 1.4;
             color: #334155;
             white-space: pre-line;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .action-btn {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: var(--accent-orange);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
             font-weight: bold;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
         
         .toggle-text { margin-top: 15px; font-size: 14px; color: #555; cursor: pointer; text-decoration: underline; }
@@ -207,105 +230,193 @@
         <div class="header-section">
             <button class="logout-btn" onclick="handleLogout()">Log Out</button>
             <h1>LAUNCH<span>PAD</span></h1>
-            <p>Your Digital Income Roadmap</p>
+            <p>Your Vertical Digital Income Roadmap</p>
         </div>
 
-        <div class="tracks-grid">
-            <div class="track-card" onclick="selectTrack('writer')">
-                <h3>✍️ The Writer</h3>
-                <p>(Copy, Captions, Blogs)</p>
-            </div>
-            <div class="track-card active" onclick="selectTrack('creative')">
-                <h3>🎨 The Creative</h3>
-                <p>(Video, Thumbnails, Canva)</p>
-            </div>
-            <div class="track-card" onclick="selectTrack('tech')">
-                <h3>🛠️ The Tech-Curious</h3>
-                <p>(No-Code, Chatbots, Data)</p>
-            </div>
-            <div class="track-card" onclick="selectTrack('organizer')">
-                <h3>🤝 The Organizer</h3>
-                <p>(VA, Community Mgmt)</p>
-            </div>
-        </div>
-
-        <div class="workspace-layout">
+        <div class="timeline-container">
             
-            <div class="left-column">
-                
-                <div class="panel">
-                    <h4>Portfolio Readiness</h4>
-                    <div class="progress-container">
-                        <div class="progress-meta">
-                            <span id="progressText">2 of 3 Projects Complete</span>
-                            <span id="progressPercent">66%</span>
-                        </div>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill" id="progressBar"></div>
-                        </div>
+            <div class="track-row" id="track-writer">
+                <div class="track-header" onclick="toggleTrackSection('writer')">
+                    <div>
+                        <h3>✍️ The Writer</h3>
+                        <p>Copywriting, Caption Systems & Blogs</p>
                     </div>
-                    
-                    <div id="projectChecklist">
-                        <div class="todo-item"><input type="checkbox" checked> <span>Project 1: Thumbnails</span></div>
-                        <div class="todo-item"><input type="checkbox" checked> <span>Project 2: Carousels</span></div>
-                        <div class="todo-item"><input type="checkbox"> <span>Project 3: Video Edit</span></div>
-                    </div>
+                    <div class="chevron">▼</div>
                 </div>
+                <div class="track-content" id="content-writer">
+                    <div class="panel-grid">
+                        <div>
+                            <div class="panel-sub-box">
+                                <h4>Portfolio Readiness (0/3)</h4>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Lead Gen Thread</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 2: Landing Page Copy</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 3: Email Newsletter</span></div>
+                            </div>
+                            <div class="panel-sub-box">
+                                <h4>Free Learning Vault</h4>
+                                <a href="#" target="_blank" class="vault-link">🔵 Copywriting Crash Course ↗</a>
+                                <a href="#" target="_blank" class="vault-link">🔴 Cold Outreach Frameworks ↗</a>
+                            </div>
+                        </div>
+                        <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <h4>Content & Copywriting Pitch</h4>
+                                <div class="pitch-preview-box">
+                                    [Client Name]
+                                    [Blog / Brand Link]
 
-                <div class="panel">
-                    <h4>Free Learning Vault</h4>
-                    <div class="links-grid">
-                        <a href="https://design.canva.com" target="_blank" class="vault-link">🔵 Canva Design School ↗</a>
-                        <a href="https://tutsplus.com" target="_blank" class="vault-link">🔴 Envato Tuts+ ↗</a>
-                        <a href="https://design.canva.com" target="_blank" class="vault-link">🔵 Canva Design School ↗</a>
-                        <a href="https://youtube.com" target="_blank" class="vault-link">🔴 Gareth David Studio ↗</a>
-                    </div>
-                </div>
+                                    I noticed an opportunity to expand your recent content into high-converting email sequences...
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="panel" style="margin-bottom:0;">
-                        <h4 style="margin-bottom:8px;">Daily Dedication</h4>
-                        <strong style="font-size:1.2rem; color:var(--accent-teal);">4 hours</strong>
-                    </div>
-                    <div class="panel" style="margin-bottom:0;">
-                        <h4 style="margin-bottom:8px;">Time to First Dollar</h4>
-                        <strong style="font-size:1.1rem; color:var(--accent-orange);">~4 weeks</strong>
+                                    [Link to Sample Copy Outline]
+                                    [Proposed Next Step]
+                                </div>
+                            </div>
+                            <button class="action-btn" onclick="alert('Writer pitch framework active!')">Generate Pitch</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="panel" style="display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <h4 id="pitchTitle">🎨 The Creative: Social Media Video Edit Pitch</h4>
-                    <div class="pitch-preview-box" id="pitchPreview">
-                        [Client Name]
-                        [Their Specific Social Profile]
-                        
-                        [Specific Hook you noticed in their video]
-                        
-                        [Link to Your Practice Video Edit]
-                        
-                        [Proposed Next Step]
+            <div class="track-row active" id="track-creative"> <div class="track-header" onclick="toggleTrackSection('creative')">
+                    <div>
+                        <h3>🎨 The Creative</h3>
+                        <p>Video Editing, High-CTR Thumbnails & Canva Design</p>
+                    </div>
+                    <div class="chevron">▼</div>
+                </div>
+                <div class="track-content" id="content-creative" style="display: block;">
+                    <div class="panel-grid">
+                        <div>
+                            <div class="panel-sub-box">
+                                <h4>Portfolio Readiness (2/3)</h4>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 66%;"></div></div>
+                                <div class="todo-item"><input type="checkbox" checked> <span>Project 1: Thumbnails</span></div>
+                                <div class="todo-item"><input type="checkbox" checked> <span>Project 2: Carousels</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 3: Video Edit</span></div>
+                            </div>
+                            <div class="panel-sub-box">
+                                <h4>Free Learning Vault</h4>
+                                <a href="https://design.canva.com" target="_blank" class="vault-link">🔵 Canva Design School ↗</a>
+                                <a href="https://tutsplus.com" target="_blank" class="vault-link">🔴 Envato Tuts+ Video Production ↗</a>
+                                <a href="https://youtube.com" target="_blank" class="vault-link">🔴 Gareth David Studio ↗</a>
+                            </div>
+                        </div>
+                        <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <h4>Social Media Video Edit Pitch</h4>
+                                <div class="pitch-preview-box">
+                                    [Client Name]
+                                    [Their Specific Social Profile]
+
+                                    [Specific Hook you noticed in their video]
+
+                                    [Link to Your Practice Video Edit]
+                                    [Proposed Next Step]
+                                </div>
+                            </div>
+                            <button class="action-btn" onclick="alert('Creative pitch framework active!')">Generate Pitch</button>
+                        </div>
                     </div>
                 </div>
-                
-                <button class="action-btn" onclick="triggerPitchGeneration()">
-                    💬 Generate Custom Pitch Template
-                </button>
+            </div>
+
+            <div class="track-row" id="track-tech">
+                <div class="track-header" onclick="toggleTrackSection('tech')">
+                    <div>
+                        <h3>🛠️ The Tech-Curious</h3>
+                        <p>No-Code Workflows, Chatbot Architecture & Integrations</p>
+                    </div>
+                    <div class="chevron">▼</div>
+                </div>
+                <div class="track-content" id="content-tech">
+                    <div class="panel-grid">
+                        <div>
+                            <div class="panel-sub-box">
+                                <h4>Portfolio Readiness (0/3)</h4>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Lead Capture Form Setup</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 2: Webhook Automation Map</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 3: AI Assistant Sandbox</span></div>
+                            </div>
+                            <div class="panel-sub-box">
+                                <h4>Free Learning Vault</h4>
+                                <a href="#" target="_blank" class="vault-link">🔵 Make.com Academy Basics ↗</a>
+                                <a href="#" target="_blank" class="vault-link">🔴 AI System Prompt Design ↗</a>
+                            </div>
+                        </div>
+                        <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <h4>Automation Setup Pitch</h4>
+                                <div class="pitch-preview-box">
+                                    [Client Name]
+
+                                    I mapped out a clean automated system to route your leads into your CRM instantly without manual work...
+
+                                    [Link to Workflow Architecture Screenshot]
+                                    [Proposed Next Step]
+                                </div>
+                            </div>
+                            <button class="action-btn" onclick="alert('Automation pitch framework active!')">Generate Pitch</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="track-row" id="track-organizer">
+                <div class="track-header" onclick="toggleTrackSection('organizer')">
+                    <div>
+                        <h3>🤝 The Organizer</h3>
+                        <p>Virtual Assistance, Community Operations & Systems Management</p>
+                    </div>
+                    <div class="chevron">▼</div>
+                </div>
+                <div class="track-content" id="content-organizer">
+                    <div class="panel-grid">
+                        <div>
+                            <div class="panel-sub-box">
+                                <h4>Portfolio Readiness (0/3)</h4>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Team Board Setup (Trello/Asana)</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 2: Calendar System Asset</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 3: Sample Client Onboarding SOP</span></div>
+                            </div>
+                            <div class="panel-sub-box">
+                                <h4>Free Learning Vault</h4>
+                                <a href="#" target="_blank" class="vault-link">🔵 Operations Dashboard Layouts ↗</a>
+                                <a href="#" target="_blank" class="vault-link">🔴 Project Coordination Frameworks ↗</a>
+                            </div>
+                        </div>
+                        <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
+                            <div>
+                                <h4>Systems Audit Proposal</h4>
+                                <div class="pitch-preview-box">
+                                    [Client Name]
+
+                                    I audit community engagement structures and noticed ways to reduce response times by 40%...
+
+                                    [Link to Sample Operations Guideline]
+                                    [Proposed Next Step]
+                                </div>
+                            </div>
+                            <button class="action-btn" onclick="alert('Operations pitch framework active!')">Generate Pitch</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
 
     <script>
-        // --- BACKEND API SETUP (Fixed) ---
+        // --- BACKEND SUPABASE CONNECTIVITY ---
         const SUPABASE_URL = "https://pdjvbtibzlwpxiknciub.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkanZidGliemx3cHhpa25jaXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNDgwMTYsImV4cCI6MjA5NzgyNDAxNn0.2B1GEkU2ijyCOgbkrDdvO8f9XYOzqyLUmCizy_ltBtU";
         
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let isSignUpMode = true;
 
-        // --- AUTHENTICATION INTERACTIVE HANDLER ---
+        // --- AUTHENTICATION INTERACTIVE CONTROL ENGINE ---
         async function handleAuth(e) {
             if (e) e.preventDefault(); 
             const email = document.getElementById('authEmail').value;
@@ -351,35 +462,26 @@
             document.getElementById('dashboard').style.display = 'none';
         }
 
-        // --- FRONTEND INTERACTIVE TRACK LOGIC ---
-        function selectTrack(track) {
-            // Remove active highlight from all options
-            document.querySelectorAll('.track-card').forEach(card => card.classList.remove('active'));
+        // --- VERTICAL SMOOTH ACCORDION DISPLAY CONTROLLER ---
+        function toggleTrackSection(trackId) {
+            const chosenRow = document.getElementById('track-' + trackId);
+            const chosenContent = document.getElementById('content-' + trackId);
             
-            // Highlight chosen item and update dynamic layout content
-            const eventTarget = window.event.currentTarget;
-            if(eventTarget) eventTarget.classList.add('active');
-
-            const pitchTitle = document.getElementById('pitchTitle');
-            const pitchPreview = document.getElementById('pitchPreview');
-
-            if (track === 'writer') {
-                pitchTitle.innerText = "✍️ The Writer: Content & Copywriting Pitch";
-                pitchPreview.innerText = "[Client Name]\n[Blog / Brand Link]\n\nI noticed an opportunity to expand your recent content into high-converting email sequences...\n\n[Link to Sample Copy Outline]\n\n[Proposed Next Step]";
-            } else if (track === 'creative') {
-                pitchTitle.innerText = "🎨 The Creative: Social Media Video Edit Pitch";
-                pitchPreview.innerText = "[Client Name]\n[Their Specific Social Profile]\n\n[Specific Hook you noticed in their video]\n\n[Link to Your Practice Video Edit]\n\n[Proposed Next Step]";
-            } else if (track === 'tech') {
-                pitchTitle.innerText = "🛠️ The Tech-Curious: Automation Setup Pitch";
-                pitchPreview.innerText = "[Client Name]\n\nI mapped out a clean automated system to route your leads into your CRM instantly without manual work...\n\n[Link to Workflow Architecture Screenshot]\n\n[Proposed Next Step]";
-            } else if (track === 'organizer') {
-                pitchTitle.innerText = "🤝 The Organizer: Systems Coordination Proposal";
-                pitchPreview.innerText = "[Client Name]\n\nI audit community engagement structures and noticed ways to reduce response times by 40%...\n\n[Link to Sample Operations Guideline]\n\n[Proposed Next Step]";
+            // Check if it's already active
+            const isAlreadyActive = chosenRow.classList.contains('active');
+            
+            // Close all items
+            document.querySelectorAll('.track-row').forEach(row => row.classList.remove('active'));
+            document.querySelectorAll('.track-content').forEach(content => content.style.display = 'none');
+            
+            // If the item wasn't active, open it up smoothly
+            if (!isAlreadyActive) {
+                chosenRow.classList.add('active');
+                chosenContent.style.display = 'block';
+                
+                // Smoothly scroll down to focus on the newly opened track panel
+                chosenRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-        }
-
-        function triggerPitchGeneration() {
-            alert("Pitch template finalized! You can copy the content box details to customize your submission.");
         }
     </script>
 </body>
