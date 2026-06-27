@@ -65,7 +65,7 @@
         #dashboard { 
             display: none; 
             width: 95%; 
-            max-width: 800px; 
+            max-width: 850px; 
             margin: 30px auto;
             box-sizing: border-box;
         }
@@ -100,7 +100,7 @@
             font-size: 13px;
         }
 
-        /* Vertical Tracks Timeline Block */
+        /* Vertical Tracks Layout */
         .timeline-container {
             display: flex;
             flex-direction: column;
@@ -116,7 +116,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Track Header Control */
         .track-header {
             padding: 1.5rem;
             background: #f8fafc;
@@ -130,20 +129,10 @@
         .track-header p { margin: 5px 0 0 0; font-size: 0.85rem; color: #64748b; }
         .chevron { font-size: 1.2rem; transition: transform 0.3s ease; color: #94a3b8; }
 
-        /* Expanded State Modifiers */
-        .track-row.active {
-            border-color: var(--accent-teal);
-        }
-        .track-row.active .track-header {
-            background: #f0f7f7;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .track-row.active .chevron {
-            transform: rotate(180deg);
-            color: var(--accent-teal);
-        }
+        .track-row.active { border-color: var(--accent-teal); }
+        .track-row.active .track-header { background: #f0f7f7; border-bottom: 1px solid var(--border-color); }
+        .track-row.active .chevron { transform: rotate(180deg); color: var(--accent-teal); }
 
-        /* Hidden Content Canvas */
         .track-content {
             display: none;
             padding: 2rem;
@@ -155,7 +144,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Panel Splitting Inside Accordion */
         .panel-grid {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
@@ -174,18 +162,19 @@
         }
         .panel-sub-box h4 { margin-top: 0; margin-bottom: 12px; font-size: 1rem; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;}
 
-        /* Portfolio Progress Checklist elements */
+        /* Metrics row splits */
+        .metrics-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        /* Checklist & Progress Styles */
         .progress-bar-bg { background: #e2e8f0; height: 6px; border-radius: 3px; overflow: hidden; margin: 8px 0 15px 0; }
         .progress-bar-fill { background: var(--accent-teal); height: 100%; transition: width 0.3s ease; }
         
         .todo-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.9rem; }
         .todo-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent-teal); cursor: pointer; }
 
-        /* Learning Vault links */
         .vault-link { display: block; font-size: 0.85rem; color: #0284c7; text-decoration: none; font-weight: 500; margin-bottom: 8px; }
         .vault-link:hover { text-decoration: underline; }
 
-        /* Proposal Box & Action Button UI */
         .pitch-preview-box {
             background: #ffffff;
             border: 1px solid var(--border-color);
@@ -230,7 +219,7 @@
         <div class="header-section">
             <button class="logout-btn" onclick="handleLogout()">Log Out</button>
             <h1>LAUNCH<span>PAD</span></h1>
-            <p>Your Vertical Digital Income Roadmap</p>
+            <p>Your Digital Income Roadmap</p>
         </div>
 
         <div class="timeline-container">
@@ -239,7 +228,7 @@
                 <div class="track-header" onclick="toggleTrackSection('writer')">
                     <div>
                         <h3>✍️ The Writer</h3>
-                        <p>Copywriting, Caption Systems & Blogs</p>
+                        <p>Copywriting, Captions & Blogs</p>
                     </div>
                     <div class="chevron">▼</div>
                 </div>
@@ -247,7 +236,7 @@
                     <div class="panel-grid">
                         <div>
                             <div class="panel-sub-box">
-                                <h4>Portfolio Readiness (0/3)</h4>
+                                <h4>Portfolio Readiness</h4>
                                 <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
                                 <div class="todo-item"><input type="checkbox"> <span>Project 1: Lead Gen Thread</span></div>
                                 <div class="todo-item"><input type="checkbox"> <span>Project 2: Landing Page Copy</span></div>
@@ -255,8 +244,12 @@
                             </div>
                             <div class="panel-sub-box">
                                 <h4>Free Learning Vault</h4>
-                                <a href="#" target="_blank" class="vault-link">🔵 Copywriting Crash Course ↗</a>
-                                <a href="#" target="_blank" class="vault-link">🔴 Cold Outreach Frameworks ↗</a>
+                                <a href="https://www.youtube.com/@AlexCattoni" target="_blank" class="vault-link">🔴 Alex Cattoni Copywriting Tutorials ↗</a>
+                                <a href="https://www.youtube.com" target="_blank" class="vault-link">🔴 Cold Outreach Strategy Guides ↗</a>
+                            </div>
+                            <div class="metrics-split">
+                                <div class="panel-sub-box"><h4>Daily Dedication</h4><strong>4 hours</strong></div>
+                                <div class="panel-sub-box"><h4>Time to Value</h4><strong>~4 weeks</strong></div>
                             </div>
                         </div>
                         <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
@@ -272,16 +265,17 @@
                                     [Proposed Next Step]
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Writer pitch framework active!')">Generate Pitch</button>
+                            <button class="action-btn" onclick="alert('Writer pitch template ready!')">Generate Custom Pitch Template</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="track-row active" id="track-creative"> <div class="track-header" onclick="toggleTrackSection('creative')">
+            <div class="track-row active" id="track-creative">
+                <div class="track-header" onclick="toggleTrackSection('creative')">
                     <div>
                         <h3>🎨 The Creative</h3>
-                        <p>Video Editing, High-CTR Thumbnails & Canva Design</p>
+                        <p>Video Editing, Thumbnails & Canva</p>
                     </div>
                     <div class="chevron">▼</div>
                 </div>
@@ -289,7 +283,7 @@
                     <div class="panel-grid">
                         <div>
                             <div class="panel-sub-box">
-                                <h4>Portfolio Readiness (2/3)</h4>
+                                <h4>Portfolio Readiness</h4>
                                 <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 66%;"></div></div>
                                 <div class="todo-item"><input type="checkbox" checked> <span>Project 1: Thumbnails</span></div>
                                 <div class="todo-item"><input type="checkbox" checked> <span>Project 2: Carousels</span></div>
@@ -299,7 +293,11 @@
                                 <h4>Free Learning Vault</h4>
                                 <a href="https://design.canva.com" target="_blank" class="vault-link">🔵 Canva Design School ↗</a>
                                 <a href="https://tutsplus.com" target="_blank" class="vault-link">🔴 Envato Tuts+ Video Production ↗</a>
-                                <a href="https://youtube.com" target="_blank" class="vault-link">🔴 Gareth David Studio ↗</a>
+                                <a href="https://youtube.com" target="_blank" class="vault-link">🔴 Gareth David Studio Design ↗</a>
+                            </div>
+                            <div class="metrics-split">
+                                <div class="panel-sub-box"><h4>Daily Dedication</h4><strong>4 hours</strong></div>
+                                <div class="panel-sub-box"><h4>Time to Value</h4><strong>~4 weeks</strong></div>
                             </div>
                         </div>
                         <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
@@ -315,7 +313,7 @@
                                     [Proposed Next Step]
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Creative pitch framework active!')">Generate Pitch</button>
+                            <button class="action-btn" onclick="alert('Creative pitch template ready!')">Generate Custom Pitch Template</button>
                         </div>
                     </div>
                 </div>
@@ -325,7 +323,7 @@
                 <div class="track-header" onclick="toggleTrackSection('tech')">
                     <div>
                         <h3>🛠️ The Tech-Curious</h3>
-                        <p>No-Code Workflows, Chatbot Architecture & Integrations</p>
+                        <p>No-Code, Chatbots & Data</p>
                     </div>
                     <div class="chevron">▼</div>
                 </div>
@@ -333,16 +331,20 @@
                     <div class="panel-grid">
                         <div>
                             <div class="panel-sub-box">
-                                <h4>Portfolio Readiness (0/3)</h4>
+                                <h4>Portfolio Readiness</h4>
                                 <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Lead Capture Form Setup</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Lead Capture Setup</span></div>
                                 <div class="todo-item"><input type="checkbox"> <span>Project 2: Webhook Automation Map</span></div>
                                 <div class="todo-item"><input type="checkbox"> <span>Project 3: AI Assistant Sandbox</span></div>
                             </div>
                             <div class="panel-sub-box">
                                 <h4>Free Learning Vault</h4>
-                                <a href="#" target="_blank" class="vault-link">🔵 Make.com Academy Basics ↗</a>
-                                <a href="#" target="_blank" class="vault-link">🔴 AI System Prompt Design ↗</a>
+                                <a href="https://academy.make.com" target="_blank" class="vault-link">🔵 Make.com Academy Basics ↗</a>
+                                <a href="https://youtube.com" target="_blank" class="vault-link">🔴 No-Code Architecture Guides ↗</a>
+                            </div>
+                            <div class="metrics-split">
+                                <div class="panel-sub-box"><h4>Daily Dedication</h4><strong>4 hours</strong></div>
+                                <div class="panel-sub-box"><h4>Time to Value</h4><strong>~4 weeks</strong></div>
                             </div>
                         </div>
                         <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
@@ -357,7 +359,7 @@
                                     [Proposed Next Step]
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Automation pitch framework active!')">Generate Pitch</button>
+                            <button class="action-btn" onclick="alert('Automation pitch template ready!')">Generate Custom Pitch Template</button>
                         </div>
                     </div>
                 </div>
@@ -367,7 +369,7 @@
                 <div class="track-header" onclick="toggleTrackSection('organizer')">
                     <div>
                         <h3>🤝 The Organizer</h3>
-                        <p>Virtual Assistance, Community Operations & Systems Management</p>
+                        <p>VA, Community Management & Systems</p>
                     </div>
                     <div class="chevron">▼</div>
                 </div>
@@ -375,16 +377,20 @@
                     <div class="panel-grid">
                         <div>
                             <div class="panel-sub-box">
-                                <h4>Portfolio Readiness (0/3)</h4>
+                                <h4>Portfolio Readiness</h4>
                                 <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 0%;"></div></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Team Board Setup (Trello/Asana)</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 2: Calendar System Asset</span></div>
-                                <div class="todo-item"><input type="checkbox"> <span>Project 3: Sample Client Onboarding SOP</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 1: Team Board Layout</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 2: Calendar System Setup</span></div>
+                                <div class="todo-item"><input type="checkbox"> <span>Project 3: Client Onboarding SOP</span></div>
                             </div>
                             <div class="panel-sub-box">
                                 <h4>Free Learning Vault</h4>
-                                <a href="#" target="_blank" class="vault-link">🔵 Operations Dashboard Layouts ↗</a>
-                                <a href="#" target="_blank" class="vault-link">🔴 Project Coordination Frameworks ↗</a>
+                                <a href="https://support.google.com/a/users/answer/9282958" target="_blank" class="vault-link">🔵 Google Workspace Learning Center ↗</a>
+                                <a href="https://www.youtube.com/@ErinBoothVA" target="_blank" class="vault-link">🔴 Erin Booth Virtual Assistant Training ↗</a>
+                            </div>
+                            <div class="metrics-split">
+                                <div class="panel-sub-box"><h4>Daily Dedication</h4><strong>4 hours</strong></div>
+                                <div class="panel-sub-box"><h4>Time to Value</h4><strong>~4 weeks</strong></div>
                             </div>
                         </div>
                         <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
@@ -399,7 +405,7 @@
                                     [Proposed Next Step]
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Operations pitch framework active!')">Generate Pitch</button>
+                            <button class="action-btn" onclick="alert('Operations pitch template ready!')">Generate Custom Pitch Template</button>
                         </div>
                     </div>
                 </div>
@@ -409,14 +415,13 @@
     </div>
 
     <script>
-        // --- BACKEND SUPABASE CONNECTIVITY ---
+        // --- BACKEND API LAYER ---
         const SUPABASE_URL = "https://pdjvbtibzlwpxiknciub.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkanZidGliemx3cHhpa25jaXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNDgwMTYsImV4cCI6MjA5NzgyNDAxNn0.2B1GEkU2ijyCOgbkrDdvO8f9XYOzqyLUmCizy_ltBtU";
         
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let isSignUpMode = true;
 
-        // --- AUTHENTICATION INTERACTIVE CONTROL ENGINE ---
         async function handleAuth(e) {
             if (e) e.preventDefault(); 
             const email = document.getElementById('authEmail').value;
@@ -462,24 +467,18 @@
             document.getElementById('dashboard').style.display = 'none';
         }
 
-        // --- VERTICAL SMOOTH ACCORDION DISPLAY CONTROLLER ---
+        // --- ACCORDION SYSTEM ---
         function toggleTrackSection(trackId) {
             const chosenRow = document.getElementById('track-' + trackId);
             const chosenContent = document.getElementById('content-' + trackId);
-            
-            // Check if it's already active
             const isAlreadyActive = chosenRow.classList.contains('active');
             
-            // Close all items
             document.querySelectorAll('.track-row').forEach(row => row.classList.remove('active'));
             document.querySelectorAll('.track-content').forEach(content => content.style.display = 'none');
             
-            // If the item wasn't active, open it up smoothly
             if (!isAlreadyActive) {
                 chosenRow.classList.add('active');
                 chosenContent.style.display = 'block';
-                
-                // Smoothly scroll down to focus on the newly opened track panel
                 chosenRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
