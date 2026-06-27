@@ -203,7 +203,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Double Column Dashboard Grid */
+        /* Double Column Dashboard Grid - Swap columns contextually */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -212,7 +212,7 @@
 
         @media (min-width: 768px) {
             .dashboard-grid {
-                grid-template-columns: 1.2fr 1fr;
+                grid-template-columns: 1.2fr 1fr; /* Checklist Left, Resources/Tools Right */
             }
         }
 
@@ -455,9 +455,39 @@
         }
         
         .toggle-text { margin-top: 15px; font-size: 14px; color: #555; cursor: pointer; text-decoration: underline; }
+
+        /* Custom Beautiful Alert Overlay System */
+        #customNotification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: #ef4444;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            animation: slideInRight 0.3s ease-out;
+            font-weight: 600;
+            max-width: 380px;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Custom clean alerts element -->
+    <div id="customNotification">
+        <span id="notificationText">Notification Message</span>
+        <button onclick="closeNotification()" style="background: none; border: none; color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer; margin-left: auto;">&times;</button>
+    </div>
 
     <!-- 1. Authentication Stage -->
     <div class="auth-container" id="authSection">
@@ -890,6 +920,20 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let isSignUpMode = true;
 
+        // Modern Notification Overlay functions
+        function showNotification(msg, type = 'error') {
+            const notif = document.getElementById('customNotification');
+            const text = document.getElementById('notificationText');
+            notif.style.background = type === 'success' ? 'var(--success)' : '#ef4444';
+            text.innerText = msg;
+            notif.style.display = 'flex';
+            setTimeout(() => { notif.style.display = 'none'; }, 4000);
+        }
+
+        function closeNotification() {
+            document.getElementById('customNotification').style.display = 'none';
+        }
+
         async function handleAuth(e) {
             if (e) e.preventDefault(); 
             const email = document.getElementById('authEmail').value;
@@ -902,15 +946,22 @@
             try {
                 if (isSignUpMode) {
                     const { data, error } = await supabaseClient.auth.signUp({ email, password });
-                    if (error) { alert("Error: " + error.message); } 
-                    else { alert("Registration successful!"); showDashboard(); }
+                    if (error) { 
+                        showNotification("Error: " + error.message, 'error'); 
+                    } else { 
+                        showNotification("Registration successful!", 'success'); 
+                        showDashboard(); 
+                    }
                 } else {
                     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                    if (error) { alert("Error: " + error.message); } 
-                    else { showDashboard(); }
+                    if (error) { 
+                        showNotification("Error: " + error.message, 'error'); 
+                    } else { 
+                        showDashboard(); 
+                    }
                 }
             } catch (err) {
-                alert('An unexpected error occurred: ' + err.message);
+                showNotification('An unexpected error occurred: ' + err.message, 'error');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = isSignUpMode ? 'Get Started' : 'Sign In';
@@ -1012,7 +1063,7 @@
             txtArea.select();
             txtArea.setSelectionRange(0, 99999);
             document.execCommand('copy'); // Guaranteed cross-origin iframe copy operation fallback
-            alert('Template script copied straight to clipboard!');
+            showNotification('Template script copied straight to clipboard!', 'success');
         }
 
         // Initial launch configurations on body display ready
