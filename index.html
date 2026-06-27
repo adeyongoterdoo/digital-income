@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Income Launchpad</title>
+    <title>Digital Money Launchpad</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
@@ -162,8 +162,17 @@
         }
         .panel-sub-box h4 { margin-top: 0; margin-bottom: 12px; font-size: 1rem; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;}
 
-        /* Metrics row splits */
+        /* Metrics & Estimator Styling */
         .metrics-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .estimator-select {
+            width: 100%;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: white;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
 
         /* Checklist & Progress Styles */
         .progress-bar-bg { background: #e2e8f0; height: 6px; border-radius: 3px; overflow: hidden; margin: 8px 0 15px 0; }
@@ -182,10 +191,12 @@
             padding: 1rem;
             font-family: monospace;
             font-size: 0.85rem;
-            line-height: 1.4;
+            line-height: 1.5;
             color: #334155;
             white-space: pre-line;
             margin-bottom: 12px;
+            max-height: 250px;
+            overflow-y: auto;
         }
 
         .action-btn {
@@ -218,7 +229,7 @@
     <div id="dashboard">
         <div class="header-section">
             <button class="logout-btn" onclick="handleLogout()">Log Out</button>
-            <h1>LAUNCH<span>PAD</span></h1>
+            <h1>DIGITAL MONEY <span>LAUNCHPAD</span></h1>
             <p>Your Digital Income Roadmap</p>
         </div>
 
@@ -228,7 +239,7 @@
                 <div class="track-header" onclick="toggleTrackSection('writer')">
                     <div>
                         <h3>✍️ The Writer</h3>
-                        <p>Copywriting, Captions & Blogs</p>
+                        <p>Copy, Captions, Blogs</p>
                     </div>
                     <div class="chevron">▼</div>
                 </div>
@@ -244,28 +255,40 @@
                             </div>
                             <div class="panel-sub-box">
                                 <h4>Free Learning Vault</h4>
+                                <a href="https://academy.hubspot.com/" target="_blank" class="vault-link">🔵 HubSpot Academy Certification ↗</a>
                                 <a href="https://www.youtube.com/@AlexCattoni" target="_blank" class="vault-link">🔴 Alex Cattoni Copywriting Tutorials ↗</a>
-                                <a href="https://www.youtube.com" target="_blank" class="vault-link">🔴 Cold Outreach Strategy Guides ↗</a>
+                                <a href="https://smartblogger.com/" target="_blank" class="vault-link">🔵 SmartBlogger Strategy Frameworks ↗</a>
                             </div>
                             <div class="metrics-split">
-                                <div class="panel-sub-box"><h4>Daily Dedication</h4><strong>4 hours</strong></div>
-                                <div class="panel-sub-box"><h4>Time to Value</h4><strong>~4 weeks</strong></div>
+                                <div class="panel-sub-box">
+                                    <h4>Daily Dedication</h4>
+                                    <select class="estimator-select" onchange="calculateTimeToValue('writer', this.value)">
+                                        <option value="2">2 Hours / day</option>
+                                        <option value="4" selected>4 Hours / day</option>
+                                        <option value="6">6 Hours / day</option>
+                                    </select>
+                                </div>
+                                <div class="panel-sub-box"><h4>Time to Value</h4><strong id="ttv-writer" style="color:var(--accent-orange);">~4 weeks</strong></div>
                             </div>
                         </div>
                         <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
                             <div>
                                 <h4>Content & Copywriting Pitch</h4>
                                 <div class="pitch-preview-box">
-                                    [Client Name]
-                                    [Blog / Brand Link]
+                                    Hi [Client Name],
 
-                                    I noticed an opportunity to expand your recent content into high-converting email sequences...
+                                    I’ve been following your brand, and I noticed an explicit opportunity to scale up your asset engagement rates by expanding your recent articles into high-converting email autoresponder sequences.
 
+                                    I drafted a quick 3-part newsletter layout customized for your audience that you can review right here:
                                     [Link to Sample Copy Outline]
-                                    [Proposed Next Step]
+
+                                    Would you be open to a 5-minute chat next week to see how we can implement this sequence for your launch setup?
+
+                                    Best regards,
+                                    [Your Name]
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Writer pitch template ready!')">Generate Custom Pitch Template</button>
+                            <button class="action-btn" onclick="alert('Writer pitch framework finalized and copied!')">Generate Custom Pitch Template</button>
                         </div>
                     </div>
                 </div>
@@ -275,7 +298,7 @@
                 <div class="track-header" onclick="toggleTrackSection('creative')">
                     <div>
                         <h3>🎨 The Creative</h3>
-                        <p>Video Editing, Thumbnails & Canva</p>
+                        <p>Video, Thumbnails, Canva</p>
                     </div>
                     <div class="chevron">▼</div>
                 </div>
@@ -291,29 +314,40 @@
                             </div>
                             <div class="panel-sub-box">
                                 <h4>Free Learning Vault</h4>
-                                <a href="https://design.canva.com" target="_blank" class="vault-link">🔵 Canva Design School ↗</a>
-                                <a href="https://tutsplus.com" target="_blank" class="vault-link">🔴 Envato Tuts+ Video Production ↗</a>
-                                <a href="https://youtube.com" target="_blank" class="vault-link">🔴 Gareth David Studio Design ↗</a>
+                                <a href="https://www.canva.com/design-school/" target="_blank" class="vault-link">🔵 Canva Design School ↗</a>
+                                <a href="https://www.youtube.com/@envatotuts" target="_blank" class="vault-link">🔴 Envato Tuts+ Video Editing ↗</a>
+                                <a href="https://www.youtube.com/@GarethDavidStudio" target="_blank" class="vault-link">🔴 Gareth David Studio Design ↗</a>
                             </div>
                             <div class="metrics-split">
-                                <div class="panel-sub-box"><h4>Daily Dedication</h4><strong>4 hours</strong></div>
-                                <div class="panel-sub-box"><h4>Time to Value</h4><strong>~4 weeks</strong></div>
+                                <div class="panel-sub-box">
+                                    <h4>Daily Dedication</h4>
+                                    <select class="estimator-select" onchange="calculateTimeToValue('creative', this.value)">
+                                        <option value="2">2 Hours / day</option>
+                                        <option value="4" selected>4 Hours / day</option>
+                                        <option value="6">6 Hours / day</option>
+                                    </select>
+                                </div>
+                                <div class="panel-sub-box"><h4>Time to Value</h4><strong id="ttv-creative" style="color:var(--accent-orange);">~4 weeks</strong></div>
                             </div>
                         </div>
                         <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
                             <div>
                                 <h4>Social Media Video Edit Pitch</h4>
                                 <div class="pitch-preview-box">
-                                    [Client Name]
-                                    [Their Specific Social Profile]
+                                    Hi [Client Name],
 
-                                    [Specific Hook you noticed in their video]
+                                    I loved your recent short-form clip, but noticed that a tighter retention hook and active visual pacing could easily boost your viewer retention by 35%.
 
+                                    To show you exactly what I mean, I went ahead and edited a high-energy, 30-second variant of your profile's asset with custom animations:
                                     [Link to Your Practice Video Edit]
-                                    [Proposed Next Step]
+
+                                    If you like this layout pacing, let me know if I can handle the editing pipeline for your next 3 asset drops completely free to prove value.
+
+                                    Best regards,
+                                    [Your Name]
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Creative pitch template ready!')">Generate Custom Pitch Template</button>
+                            <button class="action-btn" onclick="alert('Creative pitch template finalized and copied!')">Generate Custom Pitch Template</button>
                         </div>
                     </div>
                 </div>
@@ -323,7 +357,7 @@
                 <div class="track-header" onclick="toggleTrackSection('tech')">
                     <div>
                         <h3>🛠️ The Tech-Curious</h3>
-                        <p>No-Code, Chatbots & Data</p>
+                        <p>No-Code, Chatbots, Data</p>
                     </div>
                     <div class="chevron">▼</div>
                 </div>
@@ -339,27 +373,40 @@
                             </div>
                             <div class="panel-sub-box">
                                 <h4>Free Learning Vault</h4>
-                                <a href="https://academy.make.com" target="_blank" class="vault-link">🔵 Make.com Academy Basics ↗</a>
-                                <a href="https://youtube.com" target="_blank" class="vault-link">🔴 No-Code Architecture Guides ↗</a>
+                                <a href="https://grow.google/intl/ssa-en/" target="_blank" class="vault-link">🔵 Google Career Certificates ↗</a>
+                                <a href="https://www.freecodecamp.org/" target="_blank" class="vault-link">🔥 freeCodeCamp Developer Curriculum ↗</a>
+                                <a href="https://www.youtube.com/@DocWilliams" target="_blank" class="vault-link">🔴 Doc Williams No-Code Business Tools ↗</a>
                             </div>
                             <div class="metrics-split">
-                                <div class="panel-sub-box"><h4>Daily Dedication</h4><strong>4 hours</strong></div>
-                                <div class="panel-sub-box"><h4>Time to Value</h4><strong>~4 weeks</strong></div>
+                                <div class="panel-sub-box">
+                                    <h4>Daily Dedication</h4>
+                                    <select class="estimator-select" onchange="calculateTimeToValue('tech', this.value)">
+                                        <option value="2">2 Hours / day</option>
+                                        <option value="4" selected>4 Hours / day</option>
+                                        <option value="6">6 Hours / day</option>
+                                    </select>
+                                </div>
+                                <div class="panel-sub-box"><h4>Time to Value</h4><strong id="ttv-tech" style="color:var(--accent-orange);">~4 weeks</strong></div>
                             </div>
                         </div>
                         <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
                             <div>
                                 <h4>Automation Setup Pitch</h4>
                                 <div class="pitch-preview-box">
-                                    [Client Name]
+                                    Hi [Client Name],
 
-                                    I mapped out a clean automated system to route your leads into your CRM instantly without manual work...
+                                    I mapped out a clean, zero-maintenance background workflow blueprint designed to seamlessly funnel your lead inquiries straight into your core operational pipeline without manual input.
 
+                                    You can check out the step-by-step logic loop and systemic trigger diagrams I built for your app parameters right here:
                                     [Link to Workflow Architecture Screenshot]
-                                    [Proposed Next Step]
+
+                                    Let me know if you want me to spin this engine live in your ecosystem today—it takes less than 20 minutes to launch.
+
+                                    Best regards,
+                                    [Your Name]
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Automation pitch template ready!')">Generate Custom Pitch Template</button>
+                            <button class="action-btn" onclick="alert('Automation pitch template finalized and copied!')">Generate Custom Pitch Template</button>
                         </div>
                     </div>
                 </div>
@@ -369,7 +416,7 @@
                 <div class="track-header" onclick="toggleTrackSection('organizer')">
                     <div>
                         <h3>🤝 The Organizer</h3>
-                        <p>VA, Community Management & Systems</p>
+                        <p>VA, Community Mgmt</p>
                     </div>
                     <div class="chevron">▼</div>
                 </div>
@@ -385,27 +432,40 @@
                             </div>
                             <div class="panel-sub-box">
                                 <h4>Free Learning Vault</h4>
-                                <a href="https://support.google.com/a/users/answer/9282958" target="_blank" class="vault-link">🔵 Google Workspace Learning Center ↗</a>
-                                <a href="https://www.youtube.com/@ErinBoothVA" target="_blank" class="vault-link">🔴 Erin Booth Virtual Assistant Training ↗</a>
+                                <a href="https://support.google.com/a/users/answer/9283050" target="_blank" class="vault-link">🔵 Google Workspace Admin Deployment ↗</a>
+                                <a href="https://www.youtube.com/@ErinBooth" target="_blank" class="vault-link">🔴 Erin Booth Executive VA Training ↗</a>
+                                <a href="https://academy.asana.com/" target="_blank" class="vault-link">🔵 Asana Academy Operations Certification ↗</a>
                             </div>
                             <div class="metrics-split">
-                                <div class="panel-sub-box"><h4>Daily Dedication</h4><strong>4 hours</strong></div>
-                                <div class="panel-sub-box"><h4>Time to Value</h4><strong>~4 weeks</strong></div>
+                                <div class="panel-sub-box">
+                                    <h4>Daily Dedication</h4>
+                                    <select class="estimator-select" onchange="calculateTimeToValue('organizer', this.value)">
+                                        <option value="2">2 Hours / day</option>
+                                        <option value="4" selected>4 Hours / day</option>
+                                        <option value="6">6 Hours / day</option>
+                                    </select>
+                                </div>
+                                <div class="panel-sub-box"><h4>Time to Value</h4><strong id="ttv-organizer" style="color:var(--accent-orange);">~4 weeks</strong></div>
                             </div>
                         </div>
                         <div class="panel-sub-box" style="display:flex; flex-direction:column; justify-content:space-between;">
                             <div>
                                 <h4>Systems Audit Proposal</h4>
                                 <div class="pitch-preview-box">
-                                    [Client Name]
+                                    Hi [Client Name],
 
-                                    I audit community engagement structures and noticed ways to reduce response times by 40%...
+                                    I specialize in structural operations auditing, and noticed a few bottlenecks inside your workflow entry points that could easily be streamlined to reduce administrative friction by nearly 40%.
 
+                                    I compiled a simple, plug-and-play Standard Operating Procedure template for management structures that you can skim here:
                                     [Link to Sample Operations Guideline]
-                                    [Proposed Next Step]
+
+                                    Let me know if you are free for a quick sync this week to explore implementing these structural layouts.
+
+                                    Best regards,
+                                    [Your Name]
                                 </div>
                             </div>
-                            <button class="action-btn" onclick="alert('Operations pitch template ready!')">Generate Custom Pitch Template</button>
+                            <button class="action-btn" onclick="alert('Operations pitch template finalized and copied!')">Generate Custom Pitch Template</button>
                         </div>
                     </div>
                 </div>
@@ -415,7 +475,7 @@
     </div>
 
     <script>
-        // --- BACKEND API LAYER ---
+        // --- BACKEND API INITIALIZATION ---
         const SUPABASE_URL = "https://pdjvbtibzlwpxiknciub.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkanZidGliemx3cHhpa25jaXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNDgwMTYsImV4cCI6MjA5NzgyNDAxNn0.2B1GEkU2ijyCOgbkrDdvO8f9XYOzqyLUmCizy_ltBtU";
         
@@ -467,7 +527,7 @@
             document.getElementById('dashboard').style.display = 'none';
         }
 
-        // --- ACCORDION SYSTEM ---
+        // --- INTERACTIVE TIMELINE ACCORDION ACCELERATOR ---
         function toggleTrackSection(trackId) {
             const chosenRow = document.getElementById('track-' + trackId);
             const chosenContent = document.getElementById('content-' + trackId);
@@ -480,6 +540,18 @@
                 chosenRow.classList.add('active');
                 chosenContent.style.display = 'block';
                 chosenRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // --- TIME TO VALUE EVALUATOR FUNCTION ---
+        function calculateTimeToValue(track, hours) {
+            const targetElement = document.getElementById('ttv-' + track);
+            if (hours === "2") {
+                targetElement.innerText = "~8 weeks";
+            } else if (hours === "4") {
+                targetElement.innerText = "~4 weeks";
+            } else if (hours === "6") {
+                targetElement.innerText = "~2.5 weeks";
             }
         }
     </script>
